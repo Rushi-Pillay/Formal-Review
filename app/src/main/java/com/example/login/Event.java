@@ -1,7 +1,7 @@
 package com.example.login;
 
 import android.graphics.Bitmap;
-
+// this is a change
 public class Event {
     private int EventID;
     private String name;
