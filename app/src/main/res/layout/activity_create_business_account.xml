@@ -117,7 +117,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/rounded_button" />
         android:onClick="createBusinessAccount"
         android:text="Create Business Account"
         android:textColor="@color/white"
