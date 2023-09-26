@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             switch (result) {
                 case 1:
                     // Clear text and reset text color
-                    Intent intent = new Intent(MainActivity.this , MainPage.class);
+                    Intent intent = new Intent(MainActivity.this , BusinessHomePage.class);
                     startActivity(intent);
                     finish();
 //                    Toast.makeText(MainActivity.this, "LOGGED IN", Toast.LENGTH_LONG).show();
