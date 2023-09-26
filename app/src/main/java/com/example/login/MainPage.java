@@ -46,13 +46,17 @@ public class MainPage extends AppCompatActivity {
     int userID ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        //ruan has a tiny penis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         makeNice();
         business = new ArrayList<>();
         events = new ArrayList<>();
+        //business.add(new Business(1,"hello","salkdfjas","fsjakdf","lashdf","lashdf",12,"lashdf","lashdf"));
 
+//        Toast temp = new Toast(this);
+//        temp.setText(business.size()+"");
+//        temp.show();
         adapter = new BusinessAdapter(business);
         adapter2 = new EventAdaper(events);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -127,8 +131,8 @@ public class MainPage extends AppCompatActivity {
 
                 if (resultSet.next()) {
                     byte[] imageData = resultSet.getBytes("DisplayPicture");
-//                    if (imageData!=null)
-//                    bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                    if (imageData!=null)
+                    bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 } else {
 
                     Log.d("RetrieveImageTask", "Image not found for the specified user ID.");
