@@ -47,6 +47,7 @@ public class MainPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //ruan has a tiny penis
+        //work please
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         makeNice();
