@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +37,7 @@ public class BusinessHomePage extends AppCompatActivity {
     private RecyclerView rc1 ;
     private RecyclerView rc2;
     private TextView txtBusinessName;
-    private ImageView imgDisplayPic2;
+    private CircleImageView imgDisplayPic2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
