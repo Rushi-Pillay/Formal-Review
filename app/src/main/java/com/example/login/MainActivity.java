@@ -2,6 +2,8 @@ package com.example.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -96,12 +98,114 @@ public class MainActivity extends AppCompatActivity {
     public void LoginClicked(View view) throws SQLException {
         String email = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-
-        new LoginAsyncTask().execute(email, password);
+        new IsBusinessTask().execute(email, password);
 
 
     }
-    private class LoginAsyncTask extends AsyncTask<String, Void, Integer> {
+    private class IsBusinessTask extends AsyncTask<String, Void, Boolean> {
+        public String email ;
+        public String password ;
+        @Override
+        protected Boolean doInBackground(String... params) {
+            email = params[0];
+            password = params[1];
+            String selectQuery = "SELECT Email FROM Business WHERE Email = ?";
+
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+                preparedStatement.setString(1, email);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                return resultSet.next();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isBusiness) {
+            if (isBusiness) {
+                new BusinessLoginAsyncTask().execute(email,password);
+            } else {
+                // You can directly access the email and password here
+                new PersonalLoginAsyncTask().execute(email, password);
+            }
+        }
+    }
+    private class BusinessLoginAsyncTask extends AsyncTask<String, Void, Integer>{
+        @Override
+        protected Integer doInBackground(String... params)
+        {
+            String email = params[0];
+            String password = params[1];
+            String selectQuery = "SELECT Email, Password,BusinessID FROM business WHERE Email = ?";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+                preparedStatement.setString(1, email);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    String retrievedPassword = resultSet.getString("Password");
+                    if (retrievedPassword.equals(password)) {
+                        String businessID = resultSet.getString("BusinessID");
+                        SharedPreferences sharedPref2 = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor2 = sharedPref2.edit();
+                        editor2.putInt("businessID", Integer.parseInt(businessID));
+                        editor2.apply();
+
+                        return 1; // Successful login
+                    } else {
+                        return 0; // Incorrect password
+                    }
+                } else {
+                    return -1; // User not found
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -2; // Error occurred
+            }
+
+        }
+        @Override
+        protected void onPostExecute(Integer result) {
+            switch (result) {
+                case 1:
+                    // Clear text and reset text color
+                    Intent intent = new Intent(MainActivity.this , MainPage.class);
+                    startActivity(intent);
+                    finish();
+//                    Toast.makeText(MainActivity.this, "LOGGED IN", Toast.LENGTH_LONG).show();
+                    break;
+                case 0:
+                    // Incorrect password, change text color to red
+                    //  passwordEditText.setText("");
+
+                    passwordEditText.setTextColor(Color.RED);
+                    Toast.makeText(MainActivity.this, "Incorrect password", Toast.LENGTH_LONG).show();
+                    break;
+                case -1:
+                    // User not found, change text color to red
+                    //   usernameEditText.setText("");
+                    usernameEditText.setTextColor(Color.RED);
+                    // passwordEditText.setText("");
+                    passwordEditText.setTextColor(Color.RED);
+                    Toast.makeText(MainActivity.this, "User not found", Toast.LENGTH_LONG).show();
+                    break;
+                case -2:
+                    // An error occurred, change text color to red
+                    usernameEditText.setTextColor(Color.RED);
+                    passwordEditText.setTextColor(Color.RED);
+                    Toast.makeText(MainActivity.this, "Error Happened", Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    }
+    private class PersonalLoginAsyncTask extends AsyncTask<String, Void, Integer> {
         @Override
         protected Integer doInBackground(String... params) {
             String email = params[0];
