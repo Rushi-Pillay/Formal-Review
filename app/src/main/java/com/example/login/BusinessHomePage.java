@@ -66,48 +66,43 @@ public class BusinessHomePage extends AppCompatActivity {
         protected List<Business> doInBackground(Integer... integers) {
             Connection connection = DatabaseConnection.getInstance().getConnection();
             List<Business> fetchedBusinesses = new ArrayList<>();
-            try {
-                String sql = "Select * from business WHERE BusinessID = ?";
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1,businessID);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                int businessID = resultSet.getInt("BusinessID");
-                String Email = resultSet.getString("Email");
-                String password = resultSet.getString("Password");
-                String BusinessName = resultSet.getString("BusinessName");
-                String ContactNumber = resultSet.getString("ContactNumber");
-                String Specials = resultSet.getString("Specials");
-                int Capacity = resultSet.getInt("CapacityLimit");
-                String BusType = resultSet.getString("BusType");
-                String Location = resultSet.getString("Location");
-                byte[] imageData1 = resultSet.getBytes("Image1");
 
-                if (imageData1 != null && imageData1.length > 0) { // Check if imageData1 has a value
-                    Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                    Business business2 = new Business(businessID, Email, BusinessName, ContactNumber, password, Specials, Capacity, BusType, Location);
-                    business2.setImage1(bitmap1);
-                    fetchedBusinesses.add(business2);
-                }
-                else
-                {
-                   Business business2 = new Business(businessID, Email, BusinessName, ContactNumber, password, Specials, Capacity, BusType, Location);
-                   fetchedBusinesses.add(business2);
-                   // imgDisplayPic2.setImageResource(R.drawable.img);
+            try {
+                String sql = "SELECT * FROM business WHERE BusinessID = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, businessID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int businessID = resultSet.getInt("BusinessID");
+                    String email = resultSet.getString("Email");
+                    String password = resultSet.getString("Password");
+                    String businessName = resultSet.getString("BusinessName");
+                    String contactNumber = resultSet.getString("ContactNumber");
+                    String specials = resultSet.getString("Specials");
+                    int capacity = resultSet.getInt("CapacityLimit");
+                    String busType = resultSet.getString("BusType");
+                    String location = resultSet.getString("Location");
+                    byte[] imageData1 = resultSet.getBytes("Image1");
+
+                    if (imageData1 != null && imageData1.length > 0) {
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                        Business business = new Business(businessID, email, businessName, contactNumber, password, specials, capacity, busType, location);
+                        business.setImage1(bitmap1);
+                        fetchedBusinesses.add(business);
+                    } else {
+                        Business business = new Business(businessID, email, businessName, contactNumber, password, specials, capacity, busType, location);
+                        fetchedBusinesses.add(business);
+                    }
                 }
 
                 resultSet.close();
                 preparedStatement.close();
-
-
-
             } catch (Exception e) {
-                e.getMessage();
-
-
+                e.printStackTrace();
             }
 
-
-        return  fetchedBusinesses;
+            return fetchedBusinesses;
         }
 
         @Override
