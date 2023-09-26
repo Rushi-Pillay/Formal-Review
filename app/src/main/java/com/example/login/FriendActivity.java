@@ -26,7 +26,7 @@ import java.util.List;
 
 public class FriendActivity extends AppCompatActivity {
 
-    private FriendAdapter adapter1;
+    private UserAdapter adapter1;
     private FriendAdapter adapter2;
     private List<Users> usersList1;
     private List<Users> usersList2;
@@ -51,7 +51,7 @@ public class FriendActivity extends AppCompatActivity {
         usersList2 = new ArrayList<>();
         new RetrieveFriendsTask().execute();
         rc2 = findViewById(R.id.FriendRecycler);
-        Search = findViewById(R.id.SearchButton);
+
 
 
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -64,7 +64,7 @@ public class FriendActivity extends AppCompatActivity {
 
         rc1= findViewById(R.id.searchRecycler);
         usersList1 = new ArrayList<>();
-        adapter1 = new FriendAdapter(usersList1);
+        adapter1 = new UserAdapter(usersList1);
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rc1.setLayoutManager(layoutManager1);
@@ -72,10 +72,25 @@ public class FriendActivity extends AppCompatActivity {
 
 
         rc1.setAdapter(adapter1);
-        Search.setOnClickListener(events->{
-            String temps = tw.getText().toString();
-            new RetrieveUsersTask().execute(temps);
+        tw.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // This method is called to notify you that, within s, the count characters beginning at start are about to be replaced by new text with length after.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // This method is called to notify you that, within s, the count characters beginning at start have just replaced old text that had length before.
+                new RetrieveUsersTask().execute(s.toString()); // Initiates the AsyncTask with the current text as parameter
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                new RetrieveUsersTask().execute(s.toString());
+            }
         });
+
 
 
 
@@ -138,7 +153,7 @@ public class FriendActivity extends AppCompatActivity {
                         "WHERE Username LIKE ? " +
                         "OR FirstName LIKE ? " +
                         "OR LastName LIKE ? " +
-                        "LIMIT 1";
+                        "LIMIT 10";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 preparedStatement.setString(1, "%" + searchTerm + "%");
                 preparedStatement.setString(2, "%" + searchTerm + "%");
@@ -151,11 +166,19 @@ public class FriendActivity extends AppCompatActivity {
                     String Firstname = resultSet.getString("FirstName");
                     String LastName = resultSet.getString("LastName");
                     byte[] imageData1 = resultSet.getBytes("DisplayPicture");
-                    Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
 
-                    Users temp = new Users(username, Firstname, LastName);
+                    if (imageData1 != null && imageData1.length > 0) {
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                        Users temp = new Users(username, Firstname, LastName);
+                        temp.setImage1(bitmap1);
+                        fetchedFreinds.add(temp);
+                    }
+                    else {
+                        Users temp = new Users(username, Firstname, LastName);
+                        fetchedFreinds.add(temp);
+                    }
 
-                    fetchedFreinds.add(temp);
+
                 }
 
                 resultSet.close();

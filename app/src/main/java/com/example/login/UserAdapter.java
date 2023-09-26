@@ -12,50 +12,50 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private View.OnClickListener onClickListener;
-    public static class FriendViewHolder extends RecyclerView.ViewHolder {
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
         public TextView lblName2;
         public Button addbutton;
         public ImageView icon1;
-        public Users friend;
+        public Users User;
 
-        public FriendViewHolder(@NonNull View view) {
+        public UserViewHolder(@NonNull View view) {
             super(view);
             lblName2 = view.findViewById(R.id.Username2);
             icon1 = view.findViewById(R.id.DisplayPicture3);
             addbutton = view.findViewById(R.id.AddRemoveBtn);
         }
-        public void setFriend(Users friend) {
-            this.friend = friend;
+        public void setUser(Users User) {
+            this.User = User;
 
-            if (friend.getImage1() != null ) {
-                icon1.setImageBitmap(friend.getImage1());
+            if (User.getImage1() != null ) {
+                icon1.setImageBitmap(User.getImage1());
             } else {
                 icon1.setImageResource(R.drawable.img);
             }
-            lblName2.setText(friend.getUsername());
-            addbutton.setText("Remove");
+            lblName2.setText(User.getUsername());
+            addbutton.setText("Add");
 
         }
     }
-    private final List<Users> friends;
-    public FriendAdapter(List<Users> friends ){
-        this.friends = friends;
+    private final List<Users> Users;
+    public UserAdapter(List<Users> Users ){
+        this.Users = Users;
     }
     @NonNull
     @Override
-    public FriendViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.friend_card, parent, false);
-        return new FriendViewHolder(view);
+        return new UserViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-       Users friendtemo = friends.get(position);
-        holder.setFriend(friendtemo);
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+        Users Usertemo = Users.get(position);
+        holder.setUser(Usertemo);
         holder.itemView.setOnClickListener(onClickListener);
     }
     public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -64,6 +64,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     @Override
     public int getItemCount() {
-        return friends.size();
+        return Users.size();
     }
 }

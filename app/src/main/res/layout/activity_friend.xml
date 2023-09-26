@@ -9,11 +9,11 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/SeachFriendText"
-        android:layout_width="270dp"
-        android:layout_height="50dp"
+        android:layout_width="386dp"
+        android:layout_height="54dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="125dp"
         android:drawableStart="@android:drawable/ic_menu_search"
         android:hint="Search"
         android:inputType="text"
@@ -22,25 +22,11 @@
         android:paddingEnd="12dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/searchRecycler"
-        app:layout_constraintEnd_toStartOf="@+id/SearchButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FriendsLabel"
         app:startIconDrawable="@android:drawable/ic_menu_search" />
-
-    <Button
-        android:id="@+id/SearchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="69dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="11dp"
-        android:background="@drawable/rounded_button"
-        android:text="Search"
-        app:layout_constraintBottom_toTopOf="@+id/searchRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/SeachFriendText"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/FriendsLabel"
@@ -79,7 +65,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecycler"
         android:layout_width="409dp"
-        android:layout_height="207dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/YourFriendsLabel"
