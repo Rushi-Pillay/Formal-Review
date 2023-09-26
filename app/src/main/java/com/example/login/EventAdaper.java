@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -25,8 +24,8 @@ public class EventAdaper extends RecyclerView.Adapter<EventAdaper.EventViewHolde
 
         public EventViewHolder(@NonNull View view) {
             super(view);
-            lblName1 = view.findViewById(R.id.textView5);
-            icon1 = view.findViewById(R.id.imageView4);
+            lblName1 = view.findViewById(R.id.Username2);
+            icon1 = view.findViewById(R.id.DisplayPicture2);
             lbldate = view.findViewById(R.id.textView7);
             pb = view.findViewById(R.id.ratingBar);
         }

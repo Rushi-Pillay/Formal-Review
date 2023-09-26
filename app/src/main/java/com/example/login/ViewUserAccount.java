@@ -1,6 +1,7 @@
 package com.example.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -43,7 +44,8 @@ public class ViewUserAccount extends AppCompatActivity {
     }
 
     public void viewFriendsOnClick(View view) {
-        // Handle the view friends button click here
+        Intent intent = new Intent(ViewUserAccount.this,FriendActivity.class);
+        startActivity(intent);
     }
 
     private class GetUserDataTask extends AsyncTask<Integer, Void, UserData> {
