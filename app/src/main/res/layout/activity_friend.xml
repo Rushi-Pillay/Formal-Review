@@ -65,9 +65,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecycler"
         android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginTop="11dp"
         android:layout_marginBottom="10dp"
+        android:elevation="10dp"
+
         app:layout_constraintBottom_toTopOf="@+id/YourFriendsLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +79,7 @@
         android:id="@+id/FriendRecycler"
         android:layout_width="409dp"
         android:layout_height="346dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

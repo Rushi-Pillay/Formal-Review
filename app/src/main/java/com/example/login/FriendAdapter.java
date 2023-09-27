@@ -52,12 +52,23 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         return new FriendViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-       Users friendtemo = friends.get(position);
-        holder.setFriend(friendtemo);
+        Users friendItem = friends.get(position);
+        holder.setFriend(friendItem);
+        holder.addbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Trigger the method from FriendActivity to remove a friend
+                if(v.getContext() instanceof FriendActivity) {
+                    ((FriendActivity) v.getContext()).removeFriend(friendItem);
+                }
+            }
+        });
         holder.itemView.setOnClickListener(onClickListener);
     }
+
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }

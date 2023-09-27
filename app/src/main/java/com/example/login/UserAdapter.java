@@ -54,13 +54,23 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        Users Usertemo = Users.get(position);
-        holder.setUser(Usertemo);
+        Users userItem = Users.get(position);
+        holder.setUser(userItem);
+        holder.addbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Here, you trigger the method from FriendActivity to add a friend
+                if(v.getContext() instanceof FriendActivity) {
+                    ((FriendActivity) v.getContext()).addFriend(userItem);
+                }
+            }
+        });
         holder.itemView.setOnClickListener(onClickListener);
     }
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
+
 
     @Override
     public int getItemCount() {
