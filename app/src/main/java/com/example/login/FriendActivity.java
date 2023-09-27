@@ -230,17 +230,19 @@ public class FriendActivity extends AppCompatActivity {
     }
 
     private class AddFriendTask extends AsyncTask<Users, Void, Boolean> {
+
+        // Declare userToAdd at the class level
+        private Users userToAdd;
+
         @Override
         protected Boolean doInBackground(Users... users) {
-            Users userToAdd = users[0];
+            userToAdd = users[0]; // Initialize it here
             Connection connection = DatabaseConnection.getInstance().getConnection();
-            // SQL statement to insert the friendship relationship in the database
-            // Please adjust the query based on your database schema
             String insertQuery = "INSERT INTO friendships(UserID1, UserID2) VALUES(?, ?)";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
                 preparedStatement.setInt(1, userid);
-                preparedStatement.setInt(2, userToAdd.getUserID()); // Assuming there's a getUserId method in your Users class
+                preparedStatement.setInt(2, userToAdd.getUserID());
                 int rowsAffected = preparedStatement.executeUpdate();
                 preparedStatement.close();
                 return rowsAffected > 0;
@@ -256,8 +258,20 @@ public class FriendActivity extends AppCompatActivity {
                 Toast.makeText(FriendActivity.this, "Friend added successfully", Toast.LENGTH_SHORT).show();
 
                 new RetrieveFriendsTask().execute();
-                usersList1.clear();
-                adapter1.notifyDataSetChanged();
+
+                // Find and remove the user that was added from the usersList1
+                Users userToRemove = null;
+                for (Users user : usersList1) {
+                    if (user.getUserID() == userToAdd.getUserID()) {
+                        userToRemove = user;
+                        break;
+                    }
+                }
+                if (userToRemove != null) {
+                    usersList1.remove(userToRemove);
+                    adapter1.notifyDataSetChanged();
+                }
+
             } else {
                 Toast.makeText(FriendActivity.this, "Failed to add friend", Toast.LENGTH_SHORT).show();
             }
