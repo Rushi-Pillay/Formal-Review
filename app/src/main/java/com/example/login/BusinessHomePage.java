@@ -20,9 +20,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,10 +31,12 @@ public class BusinessHomePage extends AppCompatActivity {
     private List<Event> events;
     private List<Business> business;
     private businessEventDisplayAdapter adapter2;
+    private SpecialAdapter adapter1;
     private RecyclerView rc1 ;
     private RecyclerView rc2;
     private TextView txtBusinessName;
     private CircleImageView imgDisplayPic2;
+    private List<Specials> specials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +47,72 @@ public class BusinessHomePage extends AppCompatActivity {
         imgDisplayPic2 = findViewById(R.id.imgBusDisplayPic);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
         businessID = sharedPref.getInt("businessID", -1);
+
         events = new ArrayList<>();
         business = new ArrayList<>();
+        specials = new ArrayList<>();
         adapter2 = new businessEventDisplayAdapter(events);
+        adapter1 = new SpecialAdapter(specials);
+
+        rc1 = findViewById(R.id.rvSpecials);
         rc2 = findViewById(R.id.rcEvents);
+
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         rc2.setLayoutManager(layoutManager2);
+       rc1.setLayoutManager(layoutManager);
         rc2.setAdapter(adapter2);
+        rc1.setAdapter(adapter1);
         rc2.addItemDecoration(new SpaceItemDecoration(15));
+        rc1.addItemDecoration(new SpaceItemDecoration(15));
         new getBusinessDataQueryAsyncTask().execute(businessID);
+        new specialsQueryAsyncTask().execute(businessID);
         new EventQueryTask().execute(businessID);
+
+
+    }
+    private class specialsQueryAsyncTask extends  AsyncTask<Integer, Void, List<Specials>> {
+
+        @Override
+        protected List<Specials> doInBackground(Integer... integers) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            List<Specials> fetchedSpecials = new ArrayList<>();
+
+            try {
+                String sql = "SELECT * FROM Specials WHERE businessID = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1,businessID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next())
+                {
+                    int specID = resultSet.getInt("specID");
+                    String name = resultSet.getString("specName");
+                    String desc = resultSet.getString("specDescription");
+                    int imgNum = resultSet.getInt("specImg");
+
+                    Specials specials = new Specials(specID,name,desc,imgNum);
+                    fetchedSpecials.add(specials);
+                }
+                resultSet.close();
+                preparedStatement.close();
+
+            } catch (Exception e) {
+                Log.d("BusinessHomePage", "Number of specials: " + fetchedSpecials.size());
+            }
+
+            return fetchedSpecials;
+        }
+
+        @Override
+        protected void onPostExecute(List<Specials> special)
+        {
+            if(specials != null)
+            {
+                specials.addAll(special);
+                rc1.setAdapter(adapter1);
+                adapter1.notifyDataSetChanged();
+            }
+        }
 
     }
     private class getBusinessDataQueryAsyncTask extends  AsyncTask<Integer, Void, List<Business>> {
