@@ -182,7 +182,7 @@ public class MainPage extends AppCompatActivity {
                     String password = resultSet.getString("Password");
                     String BusinessName = resultSet.getString("BusinessName");
                     String ContactNumber = resultSet.getString("ContactNumber");
-                    String Specials = resultSet.getString("Specials");
+
                     int Capacity = resultSet.getInt("CapacityLimit");
                     String BusType = resultSet.getString("BusType");
                     String Location = resultSet.getString("Location");
@@ -190,14 +190,14 @@ public class MainPage extends AppCompatActivity {
 
                     if (imageData1 != null && imageData1.length > 0) { // Check if imageData1 has a value
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Specials, Capacity, BusType, Location);
+                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password,  Capacity, BusType, Location);
                         Busnesstemp.setImage1(bitmap1);
                         fetchedBusinesses.add(Busnesstemp);
                     } else {
                         // Handle the case where imageData1 is null or empty.
                         // For example, you might want to create Busnesstemp without setting the image.
 
-                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Specials, Capacity, BusType, Location);
+                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
 
                         fetchedBusinesses.add(Busnesstemp);
                     }

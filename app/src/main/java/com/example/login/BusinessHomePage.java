@@ -79,7 +79,7 @@ public class BusinessHomePage extends AppCompatActivity {
                     String password = resultSet.getString("Password");
                     String businessName = resultSet.getString("BusinessName");
                     String contactNumber = resultSet.getString("ContactNumber");
-                    String specials = resultSet.getString("Specials");
+
                     int capacity = resultSet.getInt("CapacityLimit");
                     String busType = resultSet.getString("BusType");
                     String location = resultSet.getString("Location");
@@ -87,11 +87,11 @@ public class BusinessHomePage extends AppCompatActivity {
 
                     if (imageData1 != null && imageData1.length > 0) {
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                        Business business = new Business(businessID, email, businessName, contactNumber, password, specials, capacity, busType, location);
+                        Business business = new Business(businessID, email, businessName, contactNumber, password, capacity, busType, location);
                         business.setImage1(bitmap1);
                         fetchedBusinesses.add(business);
                     } else {
-                        Business business = new Business(businessID, email, businessName, contactNumber, password, specials, capacity, busType, location);
+                        Business business = new Business(businessID, email, businessName, contactNumber, password,  capacity, busType, location);
                         fetchedBusinesses.add(business);
                     }
                 }

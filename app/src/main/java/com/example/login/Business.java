@@ -12,20 +12,19 @@ public class Business implements Serializable {
         private String name;
         private String ContactNumber;
         private String Password;
-        private String Specials;
+
         private int Capacity;
         private String Type;
         private String Location;
         private Bitmap Image1;
 
 
-    public Business(int businessID, String email, String name, String contactNumber, String password, String specials, int capacity, String type, String location) {
+    public Business(int businessID, String email, String name, String contactNumber, String password,int capacity, String type, String location) {
         this.BusinessID = businessID;
         this.Email = email;
         this.name = name;
         this.ContactNumber = contactNumber;
         this.Password = password;
-        this.Specials = specials;
         this.Capacity = capacity;
         this.Type = type;
         this.Location = location;
@@ -72,13 +71,7 @@ public class Business implements Serializable {
         Password = password;
     }
 
-    public String getSpecials() {
-        return Specials;
-    }
 
-    public void setSpecials(String specials) {
-        Specials = specials;
-    }
 
     public int getCapacity() {
         return Capacity;
