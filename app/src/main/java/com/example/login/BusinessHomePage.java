@@ -32,11 +32,15 @@ public class BusinessHomePage extends AppCompatActivity {
     private List<Business> business;
     private businessEventDisplayAdapter adapter2;
     private SpecialAdapter adapter1;
+    private ImageAdapter imageAdapter;
     private RecyclerView rc1 ;
     private RecyclerView rc2;
+    private RecyclerView rc3;
+
     private TextView txtBusinessName;
     private CircleImageView imgDisplayPic2;
     private List<Specials> specials;
+    private List<BusinessImage> imageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,24 +55,73 @@ public class BusinessHomePage extends AppCompatActivity {
         events = new ArrayList<>();
         business = new ArrayList<>();
         specials = new ArrayList<>();
+        imageList = new ArrayList<>();
         adapter2 = new businessEventDisplayAdapter(events);
         adapter1 = new SpecialAdapter(specials);
+        imageAdapter = new ImageAdapter(imageList);
 
         rc1 = findViewById(R.id.rvSpecials);
         rc2 = findViewById(R.id.rcEvents);
-
+        rc3 = findViewById(R.id.rvImages);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         rc2.setLayoutManager(layoutManager2);
        rc1.setLayoutManager(layoutManager);
+       rc3.setLayoutManager(layoutManager1);
         rc2.setAdapter(adapter2);
         rc1.setAdapter(adapter1);
+        rc3.setAdapter(imageAdapter);
         rc2.addItemDecoration(new SpaceItemDecoration(15));
         rc1.addItemDecoration(new SpaceItemDecoration(15));
+        rc3.addItemDecoration(new SpaceItemDecoration(15));
         new getBusinessDataQueryAsyncTask().execute(businessID);
         new specialsQueryAsyncTask().execute(businessID);
+        new imageQueryAsyncTask().execute(businessID);
         new EventQueryTask().execute(businessID);
 
+
+    }
+    private class imageQueryAsyncTask extends  AsyncTask<Integer, Void, List<BusinessImage>> {
+
+        @Override
+        protected List<BusinessImage> doInBackground(Integer... integers) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            List<BusinessImage> fetchedimages = new ArrayList<>();
+
+            try {
+                String sql = "SELECT image FROM businessimage WHERE businessID = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1,businessID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next())
+                {
+                  byte[] image = resultSet.getBytes("image");
+                  Bitmap bitmap1 = BitmapFactory.decodeByteArray(image, 0, image.length);
+                  BusinessImage  temp = new BusinessImage(bitmap1);
+                  fetchedimages.add(temp);
+                }
+                resultSet.close();
+                preparedStatement.close();
+
+            } catch (Exception e) {
+                Log.d("BusinessHomePage", "Number of specials: " + fetchedimages.size());
+            }
+
+            return fetchedimages;
+        }
+
+        @Override
+        protected void onPostExecute(List<BusinessImage> images)
+        {
+            if (images!=null)
+            {
+                imageList.addAll(images);
+                rc3.setAdapter(imageAdapter);
+                imageAdapter.notifyDataSetChanged();
+
+            }
+        }
 
     }
     private class specialsQueryAsyncTask extends  AsyncTask<Integer, Void, List<Specials>> {
@@ -139,6 +192,9 @@ public class BusinessHomePage extends AppCompatActivity {
                     String busType = resultSet.getString("BusType");
                     String location = resultSet.getString("Location");
                     byte[] imageData1 = resultSet.getBytes("Image1");
+
+
+
 
                     if (imageData1 != null && imageData1.length > 0) {
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
