@@ -17,61 +17,9 @@ public class Business implements Serializable {
         private String Type;
         private String Location;
         private Bitmap Image1;
-        private Bitmap image2;
 
-    public Bitmap getImage2() {
-        return image2;
-    }
 
-    public void setImage2(Bitmap image2) {
-        this.image2 = image2;
-    }
 
-    public Bitmap getImage3() {
-        return image3;
-    }
-
-    public void setImage3(Bitmap image3) {
-        this.image3 = image3;
-    }
-
-    public Bitmap getImage4() {
-        return image4;
-    }
-
-    public void setImage4(Bitmap image4) {
-        this.image4 = image4;
-    }
-
-    public Bitmap getImage5() {
-        return image5;
-    }
-
-    public void setImage5(Bitmap image5) {
-        this.image5 = image5;
-    }
-
-    public Bitmap getImage6() {
-        return image6;
-    }
-
-    public void setImage6(Bitmap image6) {
-        this.image6 = image6;
-    }
-
-    public Bitmap getImage7() {
-        return Image7;
-    }
-
-    public void setImage7(Bitmap image7) {
-        Image7 = image7;
-    }
-
-    private Bitmap image3;
-         private Bitmap image4;
-         private Bitmap image5;
-        private Bitmap image6;
-        private Bitmap Image7;
 
 
     public Business(int businessID, String email, String name, String contactNumber, String password,int capacity, String type, String location) {

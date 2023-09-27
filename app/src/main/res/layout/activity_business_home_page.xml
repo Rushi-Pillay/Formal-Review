@@ -40,8 +40,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvImages"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
             android:layout_marginTop="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
