@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class Users implements Serializable {
-
+        private int UserID;
         private String Username;
         private String Firstname;
         private String LastName;
@@ -44,6 +44,13 @@ public class Users implements Serializable {
 
     public Bitmap getImage1() {
         return Image1;
+    }
+
+    public void setUserID(int temp){
+        UserID = temp;
+    }
+    public int getUserID(){
+        return UserID;
     }
 
     public void setImage1(Bitmap image1) {
