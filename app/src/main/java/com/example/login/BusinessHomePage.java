@@ -37,7 +37,7 @@ public class BusinessHomePage extends AppCompatActivity {
     private RecyclerView rc2;
     private RecyclerView rc3;
 
-    private TextView txtBusinessName;
+    private TextView txtBusinessName,txtLocation;
     private CircleImageView imgDisplayPic2;
     private List<Specials> specials;
     private List<BusinessImage> imageList;
@@ -51,7 +51,7 @@ public class BusinessHomePage extends AppCompatActivity {
         imgDisplayPic2 = findViewById(R.id.imgBusDisplayPic);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
         businessID = sharedPref.getInt("businessID", -1);
-
+        txtLocation = findViewById(R.id.txtLocation);
         events = new ArrayList<>();
         business = new ArrayList<>();
         specials = new ArrayList<>();
@@ -223,6 +223,7 @@ public class BusinessHomePage extends AppCompatActivity {
             {
 
                 txtBusinessName.setText(business.get(0).getName());
+                txtLocation.setText(business.get(0).getLocation());
                 if (business.get(0).getImage1() != null ) {
                     imgDisplayPic2.setImageBitmap(business.get(0).getImage1());
                 } else {
