@@ -248,8 +248,8 @@ public class MainPage extends AppCompatActivity {
 
                     String venue = resultSet.getString("Venue");
                     int capacity = resultSet.getInt("CapacityLimit");
-                    int age = resultSet.getInt("AgeRestriction");
-                    String reoccuring = resultSet.getString("Recurring");
+                    boolean age = resultSet.getBoolean("AgeRestriction");
+                    int reoccuring = resultSet.getInt("Recurring");
                     int rating = resultSet.getInt("Rating");
                     String desc = resultSet.getString("Description");
                     byte[] imageData1 = resultSet.getBytes("Image1");

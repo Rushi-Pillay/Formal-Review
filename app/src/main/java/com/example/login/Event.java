@@ -10,8 +10,8 @@ public class Event {
 
     private String venue;
     private int capacity;
-    private int age;
-    private String recurring;
+    private boolean age;
+    private int recurring;
     private String description;
     private int rating;
     private Bitmap image1;
@@ -19,7 +19,7 @@ public class Event {
     private Bitmap image3;
 
 
-    public Event(int eventID, String name, String date, String time,  String venue, int capacity, int age, String recurring, String description) {
+    public Event(int eventID, String name, String date, String time,  String venue, int capacity, boolean age, int recurring, String description) {
         EventID = eventID;
         this.name = name;
         this.date = date;
@@ -81,19 +81,19 @@ public class Event {
         this.capacity = capacity;
     }
 
-    public int getAge() {
+    public boolean getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(boolean age) {
         this.age = age;
     }
 
-    public String getRecurring() {
+    public int getRecurring() {
         return recurring;
     }
 
-    public void setRecurring(String recurring) {
+    public void setRecurring(int recurring) {
         this.recurring = recurring;
     }
 

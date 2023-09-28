@@ -263,69 +263,46 @@ public class BusinessHomePage extends AppCompatActivity {
         }
     }
     private class EventQueryTask extends AsyncTask<Integer, Void, List<Event>> {
-
-
-
         @Override
         protected List<Event> doInBackground(Integer... Integer) {
             Connection connection = DatabaseConnection.getInstance().getConnection();
             List<Event> fetchedEvents = new ArrayList<>();
 
             try {
-                String sql = "Select EventID from businessevents WHERE BusinessID = ?";
+                String sql = "SELECT e.* FROM events e JOIN businessevents be ON e.EventID = be.EventID WHERE be.BusinessID = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1,businessID);
+                preparedStatement.setInt(1, businessID);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                   while (resultSet.next()) {
-                       int EventID = resultSet.getInt("EventID");
-                       String sql2 = "Select * FROM events WHERE EventID = ?";
-                       PreparedStatement preparedStatement1 = connection.prepareStatement(sql2);
-                       preparedStatement1.setInt(1, EventID);
-                       ResultSet resultSet1 = preparedStatement1.executeQuery();
-                       while (resultSet1.next()) {
-                           int EventID2 = resultSet1.getInt("EventID");
-                           String name = resultSet1.getString("EventName");
-                           String eventdate = resultSet1.getString("EventDate");
-                           String eventtime = resultSet1.getString("EventTime");
+                while (resultSet.next()) {
+                    int EventID = resultSet.getInt("EventID");
+                    String name = resultSet.getString("EventName");
+                    String eventdate = resultSet.getString("EventDate");
+                    String eventtime = resultSet.getString("EventTime");
+                    String venue = resultSet.getString("Venue");
+                    int capacity = resultSet.getInt("CapacityLimit");
+                    Boolean age = resultSet.getBoolean("AgeRestriction");
+                    int reoccuring = resultSet.getInt("Recurring");
+                    int rating = resultSet.getInt("Rating");
+                    String desc = resultSet.getString("Description");
+                    byte[] imageData1 = resultSet.getBytes("Image1");
 
-                           String venue = resultSet1.getString("Venue");
-                           int capacity = resultSet1.getInt("CapacityLimit");
-                           int age = resultSet1.getInt("AgeRestriction");
-                           String reoccuring = resultSet1.getString("Recurring");
-                           int rating = resultSet1.getInt("Rating");
-                           String desc = resultSet1.getString("Description");
-                           byte[] imageData1 = resultSet.getBytes("Image1");
-
-                           if (imageData1 != null && imageData1.length > 0) {
-                               Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                               Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
-
-                               temp.setImage1(bitmap1);
-                               temp.setRating(rating);
-                               fetchedEvents.add(temp);
-
-                           }
-                           else{
-                               Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
-                               temp.setRating(rating);
-                               fetchedEvents.add(temp);
-                           }
-
-
-
-                       }
-                       Log.d("BusinessHomePage", "Number of events retrieved: " + fetchedEvents.size());
-                       resultSet1.close();
-                       preparedStatement1.close();
-                   }
-
+                    if (imageData1 != null && imageData1.length > 0) {
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+                        temp.setImage1(bitmap1);
+                        temp.setRating(rating);
+                        fetchedEvents.add(temp);
+                    } else {
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+                        temp.setRating(rating);
+                        fetchedEvents.add(temp);
+                    }
+                }
+                Log.d("BusinessHomePage", "Number of events retrieved: " + fetchedEvents.size());
                 resultSet.close();
                 preparedStatement.close();
-
-            }catch (Exception e)
-            {
-
+            } catch (Exception e) {
                 e.getMessage();
             }
             return fetchedEvents;
@@ -333,14 +310,11 @@ public class BusinessHomePage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Event> eventData) {
-            if(eventData != null)
-            {
+            if (eventData != null) {
                 events.addAll(eventData);
                 adapter2.notifyDataSetChanged();
                 rc2.setAdapter(adapter2);
             }
-
-
         }
     }
 

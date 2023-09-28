@@ -136,7 +136,7 @@ public class EventAdd extends AppCompatActivity {
         if (mArrayUri.size() > 1) image2 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
         if (mArrayUri.size() > 2) image3 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
 
-        new InsertEventTask().execute(eventName, description, eventDate, eventTime, eventVenue, isAgeRestricted,reoccurence, capacityLimit, image1, image2, image3);
+        new InsertEventTask().execute(eventName, description, eventDate, eventTime, eventVenue, isAgeRestricted, capacityLimit,reoccurence, image1, image2, image3);
     }
 
     private byte[] convertBitmapToByteArray(Bitmap bitmap) {
