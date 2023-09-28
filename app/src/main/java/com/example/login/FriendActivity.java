@@ -110,8 +110,9 @@ public class FriendActivity extends AppCompatActivity {
 
             try {
                 String selectQuery = "SELECT UserID,Username, FirstName, LastName, DisplayPicture FROM users " +
-                        "WHERE users.UserID IN (SELECT friendships.UserID2 FROM friendships WHERE friendships.UserID1 = 33)";
+                        "WHERE users.UserID IN (SELECT friendships.UserID2 FROM friendships WHERE friendships.UserID1 =?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+                preparedStatement.setInt(1,userid);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
