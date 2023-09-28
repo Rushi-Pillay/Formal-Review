@@ -108,6 +108,32 @@ public class MainPage extends AppCompatActivity {
                 // Handle any other exceptions that may occur.
             }
         });
+        adapter2.setOnClickListener(event -> {
+            try {
+                EventAdaper.EventViewHolder viewHolder = (EventAdaper.EventViewHolder) rc2.findContainingViewHolder(event);
+                if (viewHolder != null && viewHolder.event != null) {
+                    SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor3 = sharedPref3.edit();
+
+                    // Assuming you have a method like getEventId() that returns an integer ID for the event.
+                    editor3.putInt("EventID", viewHolder.event.getEventID());
+
+                    // Store the event name for the notification message
+                    editor3.putString("EventName", viewHolder.event.getName());
+
+                    editor3.apply();
+                    Intent intent = new Intent(MainPage.this, AttendEvent.class);
+                    startActivity(intent);
+                } else {
+                    // Handle null viewHolder or null event object.
+                    Toast.makeText(MainPage.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                copyToClipboard(e.getMessage());
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
     private void copyToClipboard(String text) {
