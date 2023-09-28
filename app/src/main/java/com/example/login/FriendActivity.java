@@ -112,16 +112,22 @@ public class FriendActivity extends AppCompatActivity {
 
                 while (resultSet.next()) {
                     int tempID = resultSet.getInt("UserID");
-                  String username = resultSet.getString("Username");
-                  String Firstname = resultSet.getString("FirstName");
-                  String LastName = resultSet.getString("LastName");
+                    String username = resultSet.getString("Username");
+                    String Firstname = resultSet.getString("FirstName");
+                    String LastName = resultSet.getString("LastName");
                     byte[] imageData1 = resultSet.getBytes("DisplayPicture");
-                    Bitmap bitmap1  = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
 
-                    Users temp = new Users(username,Firstname,LastName);
-                   temp.setImage1(bitmap1);
-                   temp.setUserID(tempID);
-                    fetchedFreinds.add(temp);
+                    if (imageData1 != null && imageData1.length > 0) {
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                        Users temp = new Users(username, Firstname, LastName);
+                        temp.setUserID(tempID);
+                        temp.setImage1(bitmap1);
+                        fetchedFreinds.add(temp);
+                    } else {
+                        Users temp = new Users(username, Firstname, LastName);
+                        temp.setUserID(tempID);
+                        fetchedFreinds.add(temp);
+                    }
                 }
 
                 resultSet.close();
@@ -139,6 +145,10 @@ public class FriendActivity extends AppCompatActivity {
             if (fetchedFreinds != null && !fetchedFreinds.isEmpty()) {
                 usersList2.clear();
                 usersList2.addAll(fetchedFreinds);
+                adapter2.notifyDataSetChanged();
+            }
+            else{
+                usersList2.clear();
                 adapter2.notifyDataSetChanged();
             }
         }
