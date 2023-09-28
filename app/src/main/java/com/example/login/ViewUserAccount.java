@@ -21,6 +21,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ViewUserAccount extends AppCompatActivity {
    Connection connection;
    private int userID;
@@ -110,7 +112,7 @@ public class ViewUserAccount extends AppCompatActivity {
                 TextView txtUserName = findViewById(R.id.txtUserName);
                 TextView txtName = findViewById(R.id.txtName);
                 TextView txtEmail = findViewById(R.id.txtEmail);
-                ImageView imageView = findViewById(R.id.imgDisplayPicture);
+                CircleImageView imageView = findViewById(R.id.imgDisplayPicture);
 
                 txtUserName.setText(userName);
                 txtName.setText( name + " " + surname);
@@ -120,6 +122,7 @@ public class ViewUserAccount extends AppCompatActivity {
                 else
                 {
                     imageView.setImageResource(R.drawable.defualtuser);
+
                 }
             }
         }

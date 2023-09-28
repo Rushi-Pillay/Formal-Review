@@ -19,6 +19,9 @@ public class Business implements Serializable {
         private Bitmap Image1;
 
 
+
+
+
     public Business(int businessID, String email, String name, String contactNumber, String password,int capacity, String type, String location) {
         this.BusinessID = businessID;
         this.Email = email;
@@ -30,6 +33,7 @@ public class Business implements Serializable {
         this.Location = location;
 
     }
+
 
     public int getBusinessID() {
         return BusinessID;
