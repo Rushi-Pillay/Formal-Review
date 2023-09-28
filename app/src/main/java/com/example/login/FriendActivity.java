@@ -54,13 +54,14 @@ public class FriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend);
         tw = findViewById(R.id.SeachFriendText);
         usersList2 = new ArrayList<>();
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        userid = sharedPref.getInt("user_id", -1);
         new RetrieveFriendsTask().execute();
         rc2 = findViewById(R.id.FriendRecycler);
 
         makeNice();
 
-        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        userid = sharedPref.getInt("user_id", -1);
+
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rc2.setLayoutManager(layoutManager2);
         adapter2 = new FriendAdapter(usersList2);
@@ -84,22 +85,16 @@ public class FriendActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // This method is called to notify you that, within s, the count characters beginning at start are about to be replaced by new text with length after.
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // This method is called to notify you that, within s, the count characters beginning at start have just replaced old text that had length before.
                 new RetrieveUsersTask().execute(s.toString()); // Initiates the AsyncTask with the current text as parameter
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 new RetrieveUsersTask().execute(s.toString());
             }
         });
-
-
-
-
     }
     private class RetrieveFriendsTask extends AsyncTask<Void, Void, List<Users>> {
         @Override
