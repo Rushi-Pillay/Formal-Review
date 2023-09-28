@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +39,7 @@ public class BusinessHomePage extends AppCompatActivity {
     private RecyclerView rc1 ;
     private RecyclerView rc2;
     private RecyclerView rc3;
-
+    private Button Addevent;
     private TextView txtBusinessName,txtLocation;
     private CircleImageView imgDisplayPic2;
     private List<Specials> specials;
@@ -79,7 +82,12 @@ public class BusinessHomePage extends AppCompatActivity {
         new specialsQueryAsyncTask().execute(businessID);
         new imageQueryAsyncTask().execute(businessID);
         new EventQueryTask().execute(businessID);
+        Addevent = findViewById(R.id.button2);
 
+        Addevent.setOnClickListener(event->{
+            Intent intent = new Intent(BusinessHomePage.this,EventAdd.class);
+            startActivity(intent);
+        });
 
     }
     private class imageQueryAsyncTask extends  AsyncTask<Integer, Void, List<BusinessImage>> {
