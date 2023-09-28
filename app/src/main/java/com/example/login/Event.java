@@ -7,7 +7,7 @@ public class Event {
     private String name;
     private String date;
     private String time;
-    private Double ticketprice;
+
     private String venue;
     private int capacity;
     private int age;
@@ -19,19 +19,17 @@ public class Event {
     private Bitmap image3;
 
 
-    public Event(int eventID, String name, String date, String time, Double ticketprice, String venue, int capacity, int age, String recurring, String description, int rating, Bitmap image1) {
+    public Event(int eventID, String name, String date, String time,  String venue, int capacity, int age, String recurring, String description) {
         EventID = eventID;
         this.name = name;
         this.date = date;
         this.time = time;
-        this.ticketprice = ticketprice;
         this.venue = venue;
         this.capacity = capacity;
         this.age = age;
         this.recurring = recurring;
         this.description = description;
-        this.rating = rating;
-        this.image1 = image1;
+
     }
 
     public int getEventID() {
@@ -66,13 +64,6 @@ public class Event {
         this.time = time;
     }
 
-    public Double getTicketprice() {
-        return ticketprice;
-    }
-
-    public void setTicketprice(Double ticketprice) {
-        this.ticketprice = ticketprice;
-    }
 
     public String getVenue() {
         return venue;

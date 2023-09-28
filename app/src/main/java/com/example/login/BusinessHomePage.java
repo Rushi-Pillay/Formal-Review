@@ -288,16 +288,32 @@ public class BusinessHomePage extends AppCompatActivity {
                            String name = resultSet1.getString("EventName");
                            String eventdate = resultSet1.getString("EventDate");
                            String eventtime = resultSet1.getString("EventTime");
-                           Double ticket = resultSet1.getDouble("TicketPrice");
+
                            String venue = resultSet1.getString("Venue");
                            int capacity = resultSet1.getInt("CapacityLimit");
                            int age = resultSet1.getInt("AgeRestriction");
                            String reoccuring = resultSet1.getString("Recurring");
                            int rating = resultSet1.getInt("Rating");
                            String desc = resultSet1.getString("Description");
-                           byte[] imageData1 = resultSet1.getBytes("Image1");
-                           Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                           fetchedEvents.add(new Event(EventID2, name, eventdate, eventtime, ticket, venue, capacity, age, reoccuring, desc, rating, bitmap1));
+                           byte[] imageData1 = resultSet.getBytes("Image1");
+
+                           if (imageData1 != null && imageData1.length > 0) {
+                               Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                               Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+
+                               temp.setImage1(bitmap1);
+                               temp.setRating(rating);
+                               fetchedEvents.add(temp);
+
+                           }
+                           else{
+                               Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+                               temp.setRating(rating);
+                               fetchedEvents.add(temp);
+                           }
+
+
+
                        }
                        Log.d("BusinessHomePage", "Number of events retrieved: " + fetchedEvents.size());
                        resultSet1.close();

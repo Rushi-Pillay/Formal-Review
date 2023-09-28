@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.Image;
+import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -244,7 +245,7 @@ public class MainPage extends AppCompatActivity {
                     String name = resultSet.getString("EventName");
                     String eventdate = resultSet.getString("EventDate");
                     String eventtime = resultSet.getString("EventTime");
-                    Double ticket = resultSet.getDouble("TicketPrice");
+
                     String venue = resultSet.getString("Venue");
                     int capacity = resultSet.getInt("CapacityLimit");
                     int age = resultSet.getInt("AgeRestriction");
@@ -252,9 +253,21 @@ public class MainPage extends AppCompatActivity {
                     int rating = resultSet.getInt("Rating");
                     String desc = resultSet.getString("Description");
                     byte[] imageData1 = resultSet.getBytes("Image1");
-                    Bitmap bitmap1  = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                    fetchedEvents.add(new Event(EventID,name,eventdate,eventtime,ticket,venue,capacity,age,reoccuring,desc,rating,bitmap1));
 
+                    if (imageData1 != null && imageData1.length > 0) {
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                         Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+
+                         temp.setImage1(bitmap1);
+                         temp.setRating(rating);
+                        fetchedEvents.add(temp);
+
+                    }
+                    else{
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+                        temp.setRating(rating);
+                        fetchedEvents.add(temp);
+                    }
 
                 }
 
