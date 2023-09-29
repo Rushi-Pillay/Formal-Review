@@ -47,17 +47,12 @@ public class MainPage extends AppCompatActivity {
     int userID ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         makeNice();
         business = new ArrayList<>();
         events = new ArrayList<>();
-        //business.add(new Business(1,"hello","salkdfjas","fsjakdf","lashdf","lashdf",12,"lashdf","lashdf"));
 
-//        Toast temp = new Toast(this);
-//        temp.setText(business.size()+"");
-//        temp.show();
         adapter = new BusinessAdapter(business);
         adapter2 = new EventAdaper(events);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -97,15 +92,14 @@ public class MainPage extends AppCompatActivity {
                     Intent intent = new Intent(MainPage.this,ViewBusinessProfile.class);
                     startActivity(intent);
                 } else {
-                    // Handle null viewHolder or null business object.
-                    // You can log an error or show a Toast message for debugging.
+
                     Toast.makeText(MainPage.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 copyToClipboard(e.getMessage());
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                // Handle any other exceptions that may occur.
+
             }
         });
         adapter2.setOnClickListener(event -> {
@@ -115,17 +109,17 @@ public class MainPage extends AppCompatActivity {
                     SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor3 = sharedPref3.edit();
 
-                    // Assuming you have a method like getEventId() that returns an integer ID for the event.
+
                     editor3.putInt("EventID", viewHolder.event.getEventID());
 
-                    // Store the event name for the notification message
+
                     editor3.putString("EventName", viewHolder.event.getName());
 
                     editor3.apply();
                     Intent intent = new Intent(MainPage.this, AttendEvent.class);
                     startActivity(intent);
                 } else {
-                    // Handle null viewHolder or null event object.
+
                     Toast.makeText(MainPage.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
@@ -221,8 +215,7 @@ public class MainPage extends AppCompatActivity {
                         Busnesstemp.setImage1(bitmap1);
                         fetchedBusinesses.add(Busnesstemp);
                     } else {
-                        // Handle the case where imageData1 is null or empty.
-                        // For example, you might want to create Busnesstemp without setting the image.
+
 
                         Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
 
