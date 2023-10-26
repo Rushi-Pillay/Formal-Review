@@ -56,6 +56,7 @@ public class FriendActivity extends AppCompatActivity {
         usersList2 = new ArrayList<>();
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         userid = sharedPref.getInt("user_id", -1);
+
         new RetrieveFriendsTask().execute();
         rc2 = findViewById(R.id.FriendRecycler);
 
