@@ -42,7 +42,8 @@ public class ViewUserAccount extends AppCompatActivity {
     }
 
     public void UpdateProfileOnClick(View view) {
-        // Handle the update profile button click here
+        Intent intent = new Intent(ViewUserAccount.this,EditUserprofile.class);
+        startActivity(intent);
     }
 
     public void viewFriendsOnClick(View view) {

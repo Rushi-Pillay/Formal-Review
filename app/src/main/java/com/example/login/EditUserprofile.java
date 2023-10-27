@@ -3,6 +3,7 @@ package com.example.login;
 import static com.example.login.R.id.DisplayIM;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -65,8 +66,8 @@ public class EditUserprofile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_userprofile);
-        userid ="3";
-        userID = 3;
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        userID = sharedPref.getInt("user_id", -1);
         uName = findViewById(R.id.usernameEditText);
         Name = findViewById(R.id.nameEditText);
         Email = findViewById(R.id.emailEditText);

@@ -89,6 +89,12 @@ public class BusinessHomePage extends AppCompatActivity {
         });
 
     }
+
+    public void BTNEditBusiness(View view) {
+        Intent intent = new Intent(BusinessHomePage.this,EditBusinessProfile.class);
+        startActivity(intent);
+    }
+
     private class imageQueryAsyncTask extends  AsyncTask<Integer, Void, List<BusinessImage>> {
 
         @Override
