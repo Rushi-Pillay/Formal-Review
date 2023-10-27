@@ -101,16 +101,18 @@ public class EditBusinessProfile extends AppCompatActivity {
             List<BusinessImages> fetchedBusinesses = new ArrayList<>();
 
             try {
-                String selectQuery = "SELECT image FROM businessimage WHERE businessID ="+userID+" ";
+                String selectQuery = "SELECT image,businessImageID FROM businessimage WHERE businessID ="+userID+" ";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
                     byte[] imageData1 = resultSet.getBytes("image");
+                    int imgid = resultSet.getInt("businessImageID");
 
                     if (imageData1 != null && imageData1.length > 0) { // Check if imageData1 has a value
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
                         BusinessImages Busnesstemp = new BusinessImages(bitmap1);
+                        Busnesstemp.imageID = imgid;
                         fetchedBusinesses.add(Busnesstemp);
                     }
                 }

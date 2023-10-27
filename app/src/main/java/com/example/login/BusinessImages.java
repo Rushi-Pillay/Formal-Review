@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class BusinessImages implements Serializable {
     Bitmap image;
+    public int imageID;
     public BusinessImages(Bitmap image){
         this.image=image;
     }
