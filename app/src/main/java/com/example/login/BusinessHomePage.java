@@ -69,8 +69,8 @@ public class BusinessHomePage extends AppCompatActivity {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         rc2.setLayoutManager(layoutManager2);
-       rc1.setLayoutManager(layoutManager);
-       rc3.setLayoutManager(layoutManager1);
+        rc1.setLayoutManager(layoutManager);
+        rc3.setLayoutManager(layoutManager1);
         rc2.setAdapter(adapter2);
         rc1.setAdapter(adapter1);
         rc3.setAdapter(imageAdapter);
@@ -82,7 +82,20 @@ public class BusinessHomePage extends AppCompatActivity {
         new imageQueryAsyncTask().execute(businessID);
         new EventQueryTask().execute(businessID);
         Addevent = findViewById(R.id.button2);
+        adapter2.setOnClickListener(event->
+        {
+            businessEventDisplayAdapter.BusinessEventViewHolder viewHolder = (businessEventDisplayAdapter.BusinessEventViewHolder)rc2.findContainingViewHolder(event);
+            SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor3 = sharedPref3.edit();
+            editor3.putInt("EventID", viewHolder.event.getEventID());
 
+
+            editor3.putString("EventName", viewHolder.event.getName());
+
+            editor3.apply();
+            Intent intent = new Intent(this,BusinessViewEvents.class);
+            startActivity(intent);
+        });
         Addevent.setOnClickListener(event->{
             Intent intent = new Intent(BusinessHomePage.this,EventAdd.class);
             startActivity(intent);

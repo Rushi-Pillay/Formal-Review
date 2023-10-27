@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Event Name -->
+    <TextView
+        android:id="@+id/Eventname2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="151dp"
+        android:layout_marginEnd="151dp"
+        android:text="Event Name"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <HorizontalScrollView
+        android:id="@+id/imageScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="204dp"
+        android:layout_marginTop="9dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Eventname2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Image 1 -->
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:scaleType="fitCenter" />
+
+            <!-- Image 2 -->
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:scaleType="fitCenter" />
+
+            <!-- Image 3 -->
+            <ImageView
+                android:id="@+id/image3"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Date and Time Labels -->
+    <TextView
+        android:id="@+id/CurrentRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="26dp"
+        android:text="Current Rating"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageScrollView" />
+
+    <RatingBar
+        android:id="@+id/ratingBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="7dp"
+        android:background="#F9F9F9"
+        android:isIndicator="true"
+        android:progressTint="#FFEB3B"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:secondaryProgressTint="#FFEB3B"
+        app:layout_constraintStart_toEndOf="@+id/CurrentRating"
+        app:layout_constraintTop_toBottomOf="@+id/imageScrollView" />
+
+    <TextView
+        android:id="@+id/DateandTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"
+        android:text="Date And Time"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CurrentRating" />
+
+    <TextView
+        android:id="@+id/Datelbl"
+        android:layout_width="116dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="2dp"
+        android:text="Date"
+        app:layout_constraintStart_toEndOf="@+id/DateandTimeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+    <!-- Venue Labels -->
+
+    <TextView
+        android:id="@+id/Timelbl"
+        android:layout_width="142dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="2dp"
+        android:text="Time"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/Datelbl"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+
+    <TextView
+        android:id="@+id/Venuelbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:text="Venue"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DateandTimeLabel" />
+
+    <!-- Friends Going Label and RecyclerView -->
+
+    <TextView
+        android:id="@+id/venuelbl"
+        android:layout_width="273dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:text="Venue"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/Venuelbl"
+        app:layout_constraintTop_toBottomOf="@+id/Timelbl" />
+
+    <TextView
+        android:id="@+id/FriendsGoingLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Attendees:"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Venuelbl" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/FriendGoing"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FriendsGoingLbl" />
+
+    <!-- Attend Button -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
