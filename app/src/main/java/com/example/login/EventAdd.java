@@ -9,6 +9,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,13 +44,26 @@ public class EventAdd extends AppCompatActivity {
     private ArrayList<Uri> mArrayUri = new ArrayList<>();
     private int position = 0;
     private int reoccurence = 0;
+    private ImageView tempimage;
+    private Image temp12;
 
+    boolean nameset = false;
+    boolean dateset = false;
+    boolean descset = false;
+    boolean locationset = false;
+    boolean timeset = false;
+    boolean capacityset = false;
+    boolean reoccurset = false;
+    boolean photoset1 = false;
+    boolean photoset2 = false;
+    boolean photoset3 = false;
+    private Blob im1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_add);
 
-        // View initializations
+
         Name = findViewById(R.id.editTextTextPersonName2);
         Description = findViewById(R.id.DescriptionText);
         TimeButton = findViewById(R.id.time2);
@@ -65,8 +80,11 @@ public class EventAdd extends AppCompatActivity {
         Next = findViewById(R.id.button9);
         venue = findViewById(R.id.EditTextLoaction);
 
+
         initDatePicker();
         dateButton.setOnClickListener(event -> datePickerDialog.show());
+
+
 
         AddPhotos.setOnClickListener(v -> {
             if (mArrayUri.size() >= MAX_IMAGES) {
@@ -101,42 +119,64 @@ public class EventAdd extends AppCompatActivity {
 
         OnceOff.setOnClickListener(v -> {
             reoccurence =0;
+            reoccurset = true;
             OnceOff.setBackground(getDrawable(R.drawable.rounded_button_selected));
             Weekly.setBackground(getDrawable(R.drawable.rounded_button));
             Monthly.setBackground(getDrawable(R.drawable.rounded_button));
         });
         Weekly.setOnClickListener(v -> {
             reoccurence =7;
+            reoccurset = true;
             Weekly.setBackground(getDrawable(R.drawable.rounded_button_selected));
             OnceOff.setBackground(getDrawable(R.drawable.rounded_button));
             Monthly.setBackground(getDrawable(R.drawable.rounded_button));
         });
         Monthly.setOnClickListener(v -> {
             reoccurence = 30;
+            reoccurset = true;
                     Monthly.setBackground(getDrawable(R.drawable.rounded_button_selected));
                     OnceOff.setBackground(getDrawable(R.drawable.rounded_button));
                     Weekly.setBackground(getDrawable(R.drawable.rounded_button));
                 });
 
         Done.setOnClickListener(v -> insertEventToDatabase());
+
     }
 
     private void insertEventToDatabase() {
+
+
+
         String eventName = Name.getText().toString();
-        String description = Description.getText().toString();
-        String eventDate = dateButton.getText().toString();
-        String eventTime = TimeButton.getText().toString();
+//        String description = Description.getText().toString();
+//        String eventDate = dateButton.getText().toString();
+//        String eventTime = TimeButton.getText().toString();
+//
+//        boolean isAgeRestricted = AgeRestrict.isChecked();
+//        int capacityLimit = Integer.parseInt(Capacity.getText().toString());
+//        String eventVenue = venue.getText().toString();
 
-        boolean isAgeRestricted = AgeRestrict.isChecked();
-        int capacityLimit = Integer.parseInt(Capacity.getText().toString());
-        String eventVenue = venue.getText().toString();
+//        byte[] image1 = null, image2 = null, image3 = null;
+//        if (mArrayUri.size() > 0) image1 = convertBitmapToByteArray(((BitmapDrawable) mArrayUri.get(0)).getBitmap());
+//        if (mArrayUri.size() > 1) image2 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+//        if (mArrayUri.size() > 2) image3 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+//        try {
+//            im1.setBytes(1,image1);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-        byte[] image1 = null, image2 = null, image3 = null;
-        if (mArrayUri.size() > 0) image1 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
-        if (mArrayUri.size() > 1) image2 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
-        if (mArrayUri.size() > 2) image3 = convertBitmapToByteArray(((BitmapDrawable) imageView.getDrawable()).getBitmap());
+        byte[] image1 = null;
+       tempimage.setImageURI(mArrayUri.get(0));
+      //  image1 = convertBitmapToByteArray(((BitmapDrawable) new ImageView(mArrayUri.get(0).)).getBitmap());
+                try {
+            im1.setBytes(1,image1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        new InsertEventTask().execute(eventName, description, eventDate, eventTime, eventVenue, isAgeRestricted, capacityLimit,reoccurence, image1, image2, image3);
+        // new InsertEventTask().execute(eventName, description, eventDate, eventTime, eventVenue, isAgeRestricted, capacityLimit,reoccurence, image1, image2, image3);
+        new InsertEventTask2().execute(eventName,im1);
     }
 
     private byte[] convertBitmapToByteArray(Bitmap bitmap) {
@@ -175,6 +215,7 @@ public class EventAdd extends AppCompatActivity {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, dateSetListener, year, month, day);
+        dateset = true;
     }
 
     private void initTimePicker() {
@@ -188,42 +229,70 @@ public class EventAdd extends AppCompatActivity {
         int minute = cal.get(Calendar.MINUTE);
 
         timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, timeSetListener, hour, minute, true);
+        timeset = true;
     }
 
-    private class InsertEventTask extends AsyncTask<Object, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
-                String query = "INSERT INTO Event (EventName, Description, Date, Time, Venue, AgeRestrict,Recurring, Capacity, Image1, Image2, Image3) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setString(1, (String) params[0]);
-                    preparedStatement.setString(2, (String) params[1]);
-                    preparedStatement.setString(3, (String) params[2]);
-                    preparedStatement.setString(4, (String) params[3]);
-                    preparedStatement.setString(5, (String) params[4]);
-                    preparedStatement.setBoolean(6, (Boolean) params[5]);
-                    preparedStatement.setInt(7, (Integer) params[6]);
-                    preparedStatement.setInt(8, (Integer) params[7]);
-                    preparedStatement.setBytes(9, (byte[]) params[8]);
-                    preparedStatement.setBytes(10, (byte[]) params[9]);
-                    preparedStatement.setBytes(11, (byte[]) params[10]);
-                    preparedStatement.executeUpdate();
-                }
-                return true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
+//    private class InsertEventTask extends AsyncTask<Object, Void, Boolean> {
+//        @Override
+//        protected Boolean doInBackground(Object... params) {
+//            try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
+//                String query = "INSERT INTO events (EventName, Description, Date, Time, Venue, AgeRestrict,Recurring, Capacity, Image1, Image2, Image3) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)";
+//                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+//                    preparedStatement.setString(1, (String) params[0]);
+//                    preparedStatement.setString(2, (String) params[1]);
+//                    preparedStatement.setString(3, (String) params[2]);
+//                    preparedStatement.setString(4, (String) params[3]);
+//                    preparedStatement.setString(5, (String) params[4]);
+//                    preparedStatement.setBoolean(6, (Boolean) params[5]);
+//                    preparedStatement.setInt(7, (Integer) params[6]);
+//                    preparedStatement.setInt(8, (Integer) params[7]);
+//                    preparedStatement.setBytes(9, (byte[]) params[8]);
+//                    preparedStatement.setBytes(10, (byte[]) params[9]);
+//                    preparedStatement.setBytes(11, (byte[]) params[10]);
+//                    preparedStatement.executeUpdate();
+//                }
+//                return true;
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//                return false;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean result) {
+//            if (result) {
+//                Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
+//                finish();
+//            } else {
+//                Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+private class InsertEventTask2 extends AsyncTask<Object, Void, Boolean> {
+    @Override
+    protected Boolean doInBackground(Object... params) {
+        try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
+            String query = "INSERT INTO events (EventName,Image1) VALUES (?,?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, (String) params[0]);
+                preparedStatement.setBlob(2, (Blob) params[1]);
+                preparedStatement.executeUpdate();
             }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
-                Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
-            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+        if (result) {
+            Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
+        }
+    }
+}
 }
