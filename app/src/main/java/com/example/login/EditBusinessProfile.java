@@ -50,9 +50,6 @@ public class EditBusinessProfile extends AppCompatActivity {
     String email ;
     String contactNum ;
     private ArrayList<Uri> mArrayUri = new ArrayList<>();
-    private static final int MAX_IMAGES = 7;
-    private final int PICK_IMAGE_MULTIPLE = 1;
-    int id;
     int userID ;
     byte[] imgtoadd;
     Connection connections;
