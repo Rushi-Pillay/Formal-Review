@@ -22,7 +22,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         public BusinessViewHolder(@NonNull View view) {
             super(view);
             lblName = view.findViewById(R.id.textView6);
-            icon = view.findViewById(R.id.imageView3);
+            icon = view.findViewById(R.id.RBusinessImageView);
 
         }
 

@@ -16,7 +16,7 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/circle_shape"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/RBrowseEventsBusiness_BusinessRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -32,13 +32,13 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/RBrowseEventsBusiness_BusinessRecycler"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/RBrowseEventsBusiness_BusinessRecycler"
         android:layout_width="match_parent"
         android:layout_height="229dp"
         android:layout_marginTop="4dp"
@@ -62,10 +62,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/RBrowseEventsBusiness_BusinessRecycler" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleview3"
+        android:id="@+id/RBrowseEventsBusiness_EventsRecycler"
         android:layout_width="match_parent"
         android:layout_height="381dp"
         android:layout_marginTop="1dp"

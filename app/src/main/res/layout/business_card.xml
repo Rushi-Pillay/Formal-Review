@@ -18,7 +18,7 @@
 
 
 <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/RBusinessImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="5dp"
@@ -45,7 +45,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/RBusinessImageView" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

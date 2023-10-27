@@ -25,11 +25,10 @@ public class RushenEventAdaper extends RecyclerView.Adapter<RushenEventAdaper.Ev
         public EventViewHolder(@NonNull View view) {
             super(view);
             lblName1 = view.findViewById(R.id.ReventscardHeading);
-            icon1 = view.findViewById(R.id.imageView4);
+            icon1 = view.findViewById(R.id.REventImageView);
             txtlocation = view.findViewById(R.id.ReventsLocation);
-            txtdesrip= view.findViewById(R.id.txtDescription);
+            txtdesrip= view.findViewById(R.id.REventsDescription);
             txtdate = view.findViewById(R.id.ReventsDate);
-//            txtprice = view.findViewById(R.id.txtPrice);
             txtTime = view.findViewById(R.id.ReventTime);
         }
 
@@ -44,7 +43,6 @@ public class RushenEventAdaper extends RecyclerView.Adapter<RushenEventAdaper.Ev
             lblName1.setText(event.getName());
             txtdate.setText(event.getDate());
             txtTime.setText(event.getTime());
-//            txtprice.setText("R"+event.getTicketprice());
             txtdesrip.setText(event.getDescription());
             txtlocation.setText(event.getDate());
 

@@ -6,11 +6,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,8 +94,8 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         userID = sharedPref.getInt("user_id", -1);
 
-        rc1 = findViewById(R.id.recyclerView);
-        rc2 = findViewById(R.id.recycleview3);
+        rc1 = findViewById(R.id.RBrowseEventsBusiness_BusinessRecycler);
+        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rc1.setLayoutManager(layoutManager);
         rc1.setAdapter(adapter);

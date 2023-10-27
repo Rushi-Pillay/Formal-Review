@@ -23,9 +23,9 @@ public class RushenBusinessAdapter extends RecyclerView.Adapter<RushenBusinessAd
             super(view);
             lblName = view.findViewById(R.id.RBusinessHeading);
             location = view.findViewById(R.id.RBusinessLocation);
-            Contactnum = view.findViewById(R.id.txtContactnum);
+            Contactnum = view.findViewById(R.id.RBusinessContact);
              email = view.findViewById(R.id.RBusinessEmail);
-            icon = view.findViewById(R.id.imageView3);
+            icon = view.findViewById(R.id.RBusinessImageView);
         }
 
         public void setBusiness(Business business) {
