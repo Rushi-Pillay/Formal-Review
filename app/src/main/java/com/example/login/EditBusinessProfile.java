@@ -91,7 +91,7 @@ public class EditBusinessProfile extends AppCompatActivity {
             try {
                 SpecialAdapter.SpecialViewHolder viewHolder = (SpecialAdapter.SpecialViewHolder) rcspecial.findContainingViewHolder(specials);
                 if (viewHolder != null && viewHolder.specials != null) {
-                    SharedPreferences sharedPref4 = getSharedPreferences("SpecialsPref", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPref4 = getSharedPreferences("Myprefs4", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor3 = sharedPref4.edit();
                     editor3.putInt("SpecialID", viewHolder.specials.getSpecID());
                     editor3.apply();

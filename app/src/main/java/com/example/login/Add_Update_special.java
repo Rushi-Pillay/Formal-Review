@@ -2,6 +2,7 @@ package com.example.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -22,31 +23,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Add_Update_special extends AppCompatActivity {
-int SpecialID;
+    int SpecialID;
 TextView edtName,edtDescrip;
     String sname ;
     String sdescrip ;
+    TextView Heading;
     ImageButton BTNBaloons,BTNBeer,BTNCocktail;
     int blueColorValue;
     int newImageVal;
     int busID;
+    Button update_add;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        blueColorValue = Color.parseColor("#0356fc");
+        blueColorValue = Color.parseColor("#BBE0E9");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_update_special);
         SharedPreferences sharedPref2 = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
         busID = sharedPref2.getInt("businessID", -1);
-        SharedPreferences sharedPref3 = getSharedPreferences("SpecialsPrefs", Context.MODE_PRIVATE);
-        int specialID = sharedPref3.getInt("SpecialID", -1);
+        SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
+        SpecialID = sharedPref3.getInt("SpecialID", -1);
         edtName = findViewById(R.id.SEDTName);
         edtDescrip = findViewById(R.id.SEDTDescription);
         BTNBaloons=findViewById(R.id.imageButton3);
         BTNBeer=findViewById(R.id.imageButton4);
         BTNCocktail=findViewById(R.id.imageButton5);
+        update_add = findViewById(R.id.BTNConfirmSpecials);
+        Heading = findViewById(R.id.SEDTHEeading);
         if (SpecialID != -1){
+            Heading.setText("Update Special");
+            update_add.setText("Confirm Changes");
             new RetrieveSpecialTask().execute();
+        }else{
+            Heading.setText("Add Special");
+            update_add.setText("Add Special");
         }
     }
 
@@ -72,7 +83,7 @@ TextView edtName,edtDescrip;
     }
 
     public void Update_AddSpecial(View view) {
-        if (SpecialID != -1){
+        if (SpecialID == -1){
             new InsertDataTask().execute(sname,sdescrip);
         }else{
             new UpdateDataTask().execute(sname,sdescrip);
@@ -84,14 +95,14 @@ TextView edtName,edtDescrip;
             Connection dbconnect = com.example.login.DatabaseConnection.getInstance().getConnection();
             String name = params[0];
             String descrip = params[1];
-            String sql ="UPDATE specials SET specName = ?, specDescription = ?, specImg = ? WHERE businessID = ?";
+            String sql ="UPDATE specials SET specName = ?, specDescription = ?, specImg = ? WHERE specID = ?";
 
             try {
                 PreparedStatement preparedStatement = dbconnect.prepareStatement(sql);
                 preparedStatement.setString(1, name);
                 preparedStatement.setString(2, descrip);
                 preparedStatement.setInt(3, newImageVal);
-                preparedStatement.setInt(4, busID);
+                preparedStatement.setInt(4, SpecialID);
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
                 return true;
@@ -104,9 +115,9 @@ TextView edtName,edtDescrip;
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
-                Toast.makeText(Add_Update_special.this, "Account Updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_Update_special.this, "Special Updated!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(Add_Update_special.this, "Error updating account.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_Update_special.this, "Error updating special, try again later", Toast.LENGTH_SHORT).show();
             }
         }
     }

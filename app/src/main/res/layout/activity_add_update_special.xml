@@ -53,11 +53,11 @@
         android:textColor="#000000"
         android:textColorLink="#000000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtheadingUpdatebusinessaccount3"
+        app:layout_constraintTop_toBottomOf="@+id/SEDTHEeading"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
     <TextView
-        android:id="@+id/txtheadingUpdatebusinessaccount3"
+        android:id="@+id/SEDTHEeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
