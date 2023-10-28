@@ -85,6 +85,27 @@ public class EditBusinessProfile extends AppCompatActivity {
         setuprecyclers();
         new RetrieveBusinessTask().execute();
         setuprecyclers();
+
+
+        adapter1.setOnClickListener(specials -> {
+            try {
+                SpecialAdapter.SpecialViewHolder viewHolder = (SpecialAdapter.SpecialViewHolder) rcspecial.findContainingViewHolder(specials);
+                if (viewHolder != null && viewHolder.specials != null) {
+                    SharedPreferences sharedPref4 = getSharedPreferences("SpecialsPref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor3 = sharedPref4.edit();
+                    editor3.putInt("SpecialID", viewHolder.specials.getSpecID());
+                    editor3.apply();
+                    Intent intent = new Intent(EditBusinessProfile.this, Add_Update_special.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(EditBusinessProfile.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                copyToClipboard(e.getMessage());
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setuprecyclers(){
@@ -95,6 +116,15 @@ public class EditBusinessProfile extends AppCompatActivity {
         rc1.setLayoutManager(layoutManager);
         rc1.setAdapter(adapter);
 
+    }
+
+    public void AddSpecial(View view) {
+        SharedPreferences sharedPref4 = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor3 = sharedPref4.edit();
+        editor3.putInt("SpecialID", -1);
+        editor3.apply();
+        Intent intent = new Intent(EditBusinessProfile.this, Add_Update_special.class);
+        startActivity(intent);
     }
 
     private class specialsQueryAsyncTask extends  AsyncTask<Integer, Void, List<Specials>> {

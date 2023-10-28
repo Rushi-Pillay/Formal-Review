@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Add_Update_special">
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Special Description"
+        android:textColor="#000000"
+        android:textColorLink="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/SEDTDescription"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Special Name"
+        android:textColor="#000000"
+        android:textColorLink="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/SEDTName"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/SEDTDescription"
+        android:layout_width="379dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorLink="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SEDTName"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/SEDTName"
+        android:layout_width="379dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorLink="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtheadingUpdatebusinessaccount3"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/txtheadingUpdatebusinessaccount3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Edit/Add Special"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/BTNConfirmSpecials"
+        android:layout_width="109dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="28dp"
+        android:background="#000000"
+        android:onClick="Update_AddSpecial"
+        android:text="Update/Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="OnClick" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="236dp"
+        android:onClick="BalloonsOnclick"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/BTNConfirmSpecials"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/balloons" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="236dp"
+        android:onClick="BeerOnclick"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/BTNConfirmSpecials"
+        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:srcCompat="@drawable/beer" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="236dp"
+        android:onClick="CocktailOnclick"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/BTNConfirmSpecials"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton4"
+        app:srcCompat="@drawable/cocktail" />
+</androidx.constraintlayout.widget.ConstraintLayout>

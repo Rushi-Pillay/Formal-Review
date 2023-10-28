@@ -19,7 +19,7 @@ public class SpecialAdapter extends RecyclerView.Adapter<SpecialAdapter.SpecialV
         private CircleImageView imgDisp;
         private  TextView txtName;
         private TextView txtDesc;
-        private Specials specials;
+        public Specials specials;
         public SpecialViewHolder(@NonNull View view) {
             super(view);
             txtName = view.findViewById(R.id.txtSpecName);
