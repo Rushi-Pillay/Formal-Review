@@ -83,6 +83,27 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
                 // Handle any other exceptions that may occur.
             }
         });
+        adapter2.setOnClickListener(event -> {
+            try {
+                EventAdaper.EventViewHolder viewHolder = (EventAdaper.EventViewHolder) rc2.findContainingViewHolder(event);
+                if (viewHolder != null && viewHolder.event != null) {
+                    SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor3 = sharedPref3.edit();
+                    editor3.putInt("EventID", viewHolder.event.getEventID());
+                    editor3.putString("EventName", viewHolder.event.getName());
+                    editor3.apply();
+                    Intent intent = new Intent(BrowseEventsAndBusiness.this, AttendEvent.class);
+                    startActivity(intent);
+                } else {
+
+                    Toast.makeText(BrowseEventsAndBusiness.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                copyToClipboard(e.getMessage());
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

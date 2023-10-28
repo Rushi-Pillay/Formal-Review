@@ -1,5 +1,6 @@
 package com.example.login;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -135,6 +136,7 @@ public class MainPage extends AppCompatActivity {
         }
     }
     private class RetrieveImageTask extends AsyncTask<Integer, Void, Bitmap> {
+        @SuppressLint("SuspiciousIndentation")
         @Override
         protected Bitmap doInBackground(Integer... integers) {
 

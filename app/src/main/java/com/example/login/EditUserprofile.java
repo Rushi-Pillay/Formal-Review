@@ -96,7 +96,7 @@ public class EditUserprofile extends AppCompatActivity {
                     "FirstName = '" + name + "', " +
                     "LastName = '" + surname + "', " +
                     "Email = '" + email + "' " +
-                    "WHERE UserID = '" + userid + "';";
+                    "WHERE UserID = '" + userID + "';";
 
             Statement statement = connection.createStatement();
             statement.executeUpdate(updateQuery);
@@ -143,7 +143,7 @@ public class EditUserprofile extends AppCompatActivity {
             //endregion
             //Toast.makeText(this, "Connected...", Toast.LENGTH_SHORT).show();
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-            String selectQuery = "SELECT * FROM Users WHERE UserID = '"+userid+"'";
+            String selectQuery = "SELECT * FROM Users WHERE UserID = '"+userID+"'";
             //Toast.makeText(this,selectQuery,Toast.LENGTH_LONG).show();
             ResultSet resultSet =statement.executeQuery(selectQuery);
 

@@ -51,7 +51,6 @@ public class EditBusinessProfile extends AppCompatActivity {
     String email ;
     String contactNum ;
     private ArrayList<Uri> mArrayUri = new ArrayList<>();
-    int userID ;
     byte[] imgtoadd;
     Connection connections;
     Statement statement;
@@ -84,7 +83,6 @@ public class EditBusinessProfile extends AppCompatActivity {
         busimages = new ArrayList<>();
         adapter = new RushenBusinessImageAdapter(busimages);
 
-        userID = 1;
 
         rc1 = findViewById(R.id.recylerineditbus);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -100,7 +98,7 @@ public class EditBusinessProfile extends AppCompatActivity {
             List<BusinessImages> fetchedBusinesses = new ArrayList<>();
 
             try {
-                String selectQuery = "SELECT image,businessImageID FROM businessimage WHERE businessID ="+userID+" ";
+                String selectQuery = "SELECT image,businessImageID FROM businessimage WHERE businessID ="+UserID+" ";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -196,7 +194,7 @@ public class EditBusinessProfile extends AppCompatActivity {
             String insertQuery = "INSERT INTO businessimage(businessID, image) VALUES(?, ?)";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-                preparedStatement.setInt(1, userID);
+                preparedStatement.setInt(1, UserID);
                 preparedStatement.setBytes(2, imagebytearr);
                 int rowsAffected = preparedStatement.executeUpdate();
                 preparedStatement.close();
