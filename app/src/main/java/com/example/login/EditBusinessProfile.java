@@ -40,18 +40,14 @@ import java.util.List;
 
 public class EditBusinessProfile extends AppCompatActivity {
     EditText edtName, edtLocation, edtEmail,edtContact;
-    Connection connection;
     RushenBusinessImageAdapter adapter;
     RecyclerView rc1;
-    private int position = 0;
-    Button prev,next,addphotos;
+    Button addphotos;
     ImageView Businessdisplayimage;
     String name ;
     String location ;
     String email ;
     String contactNum ;
-    private ArrayList<Uri> mArrayUri = new ArrayList<>();
-    byte[] imgtoadd;
     Connection connections;
     Statement statement;
     ArrayList<BusinessImages> busimages;
