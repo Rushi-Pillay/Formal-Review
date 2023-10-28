@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,16 +42,20 @@ import java.util.List;
 public class EditBusinessProfile extends AppCompatActivity {
     EditText edtName, edtLocation, edtEmail,edtContact;
     RushenBusinessImageAdapter adapter;
-    RecyclerView rc1;
+    RecyclerView rcspecial;
     Button addphotos;
+    SpecialAdapter adapter1;
     ImageView Businessdisplayimage;
     String name ;
+    RecyclerView rc1;
     String location ;
+    List<Specials> specials;
     String email ;
     String contactNum ;
     Connection connections;
     Statement statement;
     ArrayList<BusinessImages> busimages;
+
     int UserID;
     private static final int REQUEST_CODE_GALLERY = 101;
 
@@ -63,12 +68,19 @@ public class EditBusinessProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_business_profile);
         makeNice();
+        specials = new ArrayList<>();
+        adapter1 = new SpecialAdapter(specials);
         edtName = findViewById(R.id.editthebusinessname);
         edtLocation = findViewById(R.id.edtLocation);
         edtEmail = findViewById(R.id.edtEmail);
         edtContact = findViewById(R.id.edtContactNumber);
         addphotos = findViewById(R.id.btneditaddPhotos);
         Businessdisplayimage = findViewById(R.id.editBusinessImaeview);
+        rcspecial = findViewById(R.id.ERVSpecials);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        rcspecial.setLayoutManager(layoutManager);
+        rcspecial.addItemDecoration(new SpaceItemDecoration(15));
+        new specialsQueryAsyncTask().execute(UserID);
         setdata();
         setuprecyclers();
         new RetrieveBusinessTask().execute();
@@ -78,12 +90,55 @@ public class EditBusinessProfile extends AppCompatActivity {
     public void setuprecyclers(){
         busimages = new ArrayList<>();
         adapter = new RushenBusinessImageAdapter(busimages);
-
-
         rc1 = findViewById(R.id.recylerineditbus);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rc1.setLayoutManager(layoutManager);
         rc1.setAdapter(adapter);
+
+    }
+
+    private class specialsQueryAsyncTask extends  AsyncTask<Integer, Void, List<Specials>> {
+
+        @Override
+        protected List<Specials> doInBackground(Integer... integers) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            List<Specials> fetchedSpecials = new ArrayList<>();
+
+            try {
+                String sql = "SELECT * FROM Specials WHERE businessID = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1,UserID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next())
+                {
+                    int specID = resultSet.getInt("specID");
+                    String name = resultSet.getString("specName");
+                    String desc = resultSet.getString("specDescription");
+                    int imgNum = resultSet.getInt("specImg");
+
+                    Specials specials = new Specials(specID,name,desc,imgNum);
+                    fetchedSpecials.add(specials);
+                }
+                resultSet.close();
+                preparedStatement.close();
+
+            } catch (Exception e) {
+                Log.d("BusinessHomePage", "Number of specials: " + fetchedSpecials.size());
+            }
+
+            return fetchedSpecials;
+        }
+
+        @Override
+        protected void onPostExecute(List<Specials> special)
+        {
+            if(specials != null)
+            {
+                specials.addAll(special);
+                rcspecial.setAdapter(adapter1);
+                adapter1.notifyDataSetChanged();
+            }
+        }
 
     }
     private class RetrieveBusinessTask extends AsyncTask<Void, Void, List<BusinessImages>> {
@@ -326,4 +381,5 @@ public class EditBusinessProfile extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }
