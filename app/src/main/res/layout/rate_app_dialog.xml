@@ -7,45 +7,28 @@
     android:background="@color/white"
     >
 
-    <RatingBar
-        android:id="@+id/Rate_eventrating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginBottom="20dp"
-        android:background="#F9F9F9"
-        android:isIndicator="true"
-        android:progressTint="#FFEB3B"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        android:secondaryProgressTint="#FFEB3B"
-        app:layout_constraintBottom_toTopOf="@+id/dismissbtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_text"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="140dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:text="Rate the event"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/message_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="116dp"
+        android:layout_width="238dp"
+        android:layout_height="67dp"
         android:layout_marginTop="16dp"
         android:text="Text for rating goes here"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
     <Button
@@ -53,25 +36,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="272dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:background="@color/black"
         android:text="Submit"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintTop_toBottomOf="@+id/Rate_eventrating" />
 
     <Button
         android:id="@+id/dismissbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="272dp"
-        android:layout_marginEnd="288dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:background="@color/black"
+        android:onClick="Dismissonclick"
         android:text="Dismiss"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Rate_eventrating" />
+
+    <RatingBar
+        android:id="@+id/Rate_eventrating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/message_text"
+        tools:layout_editor_absoluteX="85dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

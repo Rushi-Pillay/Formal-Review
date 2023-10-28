@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.mysql.jdbc.PreparedStatement;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -23,33 +21,30 @@ public class RateAppDialog extends Dialog {
 
     private RatingBar ratingBar;
     private Button submitButton;
-    private Button dismissbutton;
-    TextView msgtext;
+    private Button dismissButton;
+    TextView msgText;
     int eid;
-    int Userid = 1;
+    int userId = 1;
     String ename;
 
     public RateAppDialog(Context context) {
         super(context);
     }
 
-    public void  Setinfo(int eventid,String EventName){
+    public void SetInfo(int eventid, String eventName) {
         eid = eventid;
-        ename = EventName;
-
-
+        ename = eventName;
     }
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        msgtext = findViewById(R.id.message_text);
-        dismissbutton = findViewById(R.id.dismissbtn);
-        submitButton = findViewById(R.id.submit_button);
         setContentView(R.layout.rate_app_dialog);
-        msgtext.setText("You recently went to "+ename+", Would you like to rate it between 0-5 stars?");
-        ratingBar = findViewById(R.id.Rate_eventrating);
+        msgText = findViewById(R.id.message_text);
+        dismissButton = findViewById(R.id.dismissbtn);
         submitButton = findViewById(R.id.submit_button);
+        ratingBar = findViewById(R.id.Rate_eventrating);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +55,12 @@ public class RateAppDialog extends Dialog {
                 Date currentDate = calendar.getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String formattedDate = dateFormat.format(currentDate);
-                new InsertRatingTask().execute(eid,Userid,formattedDate,rating);
+                new InsertRatingTask().execute(eid, userId, formattedDate, rating);
                 dismiss();
             }
         });
 
-        dismissbutton.setOnClickListener(new View.OnClickListener() {
+        dismissButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
@@ -80,7 +75,7 @@ public class RateAppDialog extends Dialog {
             int eventID = (int) params[0];
             int userID = (int) params[1];
             String date = (String) params[2];
-            double rating = (double) params[3];
+            float rating = (float) params[3];
 
             String sql = "INSERT INTO eventrating (EventID, UserID, Date, Rating) " +
                     "VALUES (?, ?, ?, ?)";

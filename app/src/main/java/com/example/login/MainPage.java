@@ -43,6 +43,7 @@ public class MainPage extends AppCompatActivity {
     private List<Event> events;
     private ImageView imgUser;
     int userID ;
+    private RateAppDialog rateAppDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,7 @@ public class MainPage extends AppCompatActivity {
         makeNice();
         business = new ArrayList<>();
         events = new ArrayList<>();
+        rateAppDialog = new RateAppDialog(this);
 
         adapter = new BusinessAdapter(business);
         adapter2 = new EventAdaper(events);
@@ -73,6 +75,8 @@ public class MainPage extends AppCompatActivity {
         new RetrieveImageTask().execute(userID);
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
+        new RetrieveAttendedEventsTask().execute();
+
 
         imageView.setOnClickListener(events->{
             Intent intent = new Intent(MainPage.this,ViewUserAccount.class);
@@ -214,10 +218,7 @@ public class MainPage extends AppCompatActivity {
                         Busnesstemp.setImage1(bitmap1);
                         fetchedBusinesses.add(Busnesstemp);
                     } else {
-
-
                         Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
-
                         fetchedBusinesses.add(Busnesstemp);
                     }
 
@@ -326,4 +327,64 @@ public class MainPage extends AppCompatActivity {
         }
     }
 
+    public class RetrieveAttendedEventsTask extends AsyncTask<Void, Void, List<EventInfo>> {
+
+        @Override
+        protected List<EventInfo> doInBackground(Void... voids) {
+            List<EventInfo> eventList = new ArrayList<>();
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+
+            try {
+                String selectQuery = "SELECT DISTINCT ea.EventID, e.EventName " +
+                        "FROM eventattendees ea " +
+                        "JOIN events e ON ea.EventID = e.EventID " +
+                        "LEFT JOIN eventrating r ON r.EventID = ea.EventID AND r.UserID = ea.UserID " +
+                        "WHERE ea.UserID = ? " +
+                        "  AND (" +
+                        "      NOT EXISTS (" +
+                        "          SELECT 1 " +
+                        "          FROM eventrating er " +
+                        "          WHERE er.EventID = ea.EventID AND er.UserID = ea.UserID AND er.UserID" +
+                        "      )" +
+                        "      OR e.EventDate > CURRENT_DATE" +
+                        "  );";
+
+                PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int eventId = resultSet.getInt("EventID");
+                    String eventName = resultSet.getString("EventName");
+
+                    // Create an EventInfo object and add it to the list
+                    EventInfo eventInfo = new EventInfo(eventId, eventName);
+                    eventList.add(eventInfo);
+                }
+
+                resultSet.close();
+                preparedStatement.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return eventList;
+        }
+
+        @Override
+        protected void onPostExecute(List<EventInfo> eventList) {
+            for (EventInfo e :eventList){
+                rateupstuff(e.EventName,e.EventID);
+            }
+        }
+    }
+
+    private void rateupstuff(String event,int eventid){
+            if (rateAppDialog == null) {
+                rateAppDialog = new RateAppDialog(MainPage.this);
+            }
+            rateAppDialog.SetInfo(eventid, event);
+            rateAppDialog.show();
+        }
 }
