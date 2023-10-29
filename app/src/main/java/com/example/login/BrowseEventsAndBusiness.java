@@ -12,8 +12,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -58,25 +56,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         new RetrieveImageTask().execute(userID);
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // This method is called to notify you that, within s, the count characters beginning at start are about to be replaced by new text with length after.
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // This method is called to notify you that, within s, the count characters beginning at start have just replaced old text that had length before.
-                searchterm = s.toString();
-                new RetrieveSearchedBusinessTask().execute(); // Initiates the AsyncTask with the current text as parameter
-                new RetrieveSearchEventTask().execute();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                searchterm = s.toString();
-                new RetrieveSearchedBusinessTask().execute();
-                new RetrieveSearchEventTask().execute();
-            }
-        });
+
 
         imageView.setOnClickListener(events->{
             Intent intent = new Intent(BrowseEventsAndBusiness.this,ViewUserAccount.class);
@@ -159,6 +139,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
 
     public void doSearch(View view) {
         setuprecyclers();
+
         searchterm = String.valueOf(search.getText());
         new RetrieveSearchedBusinessTask().execute();
         new RetrieveSearchEventTask().execute();
