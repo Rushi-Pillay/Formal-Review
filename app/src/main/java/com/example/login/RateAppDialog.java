@@ -3,6 +3,7 @@ package com.example.login;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -24,16 +25,18 @@ public class RateAppDialog extends Dialog {
     private Button dismissButton;
     TextView msgText;
     int eid;
-    int userId = 1;
+   int userId;
     String ename;
 
     public RateAppDialog(Context context) {
         super(context);
     }
 
-    public void SetInfo(int eventid, String eventName) {
+    public void SetInfo(int eventid, String eventName ,int userId) {
         eid = eventid;
         ename = eventName;
+        this.userId= userId;
+
     }
 
     @SuppressLint("MissingInflatedId")
@@ -45,19 +48,39 @@ public class RateAppDialog extends Dialog {
         dismissButton = findViewById(R.id.dismissbtn);
         submitButton = findViewById(R.id.submit_button);
         ratingBar = findViewById(R.id.Rate_eventrating);
+        Button dontaskagain = findViewById(R.id.Dontaskagain);
+        msgText.setText("You have recently attended "+ename+" Would you like to rate the event between 1 and 5?");
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Get the rating from the user.
                 float rating = ratingBar.getRating();
-                Calendar calendar = Calendar.getInstance();
-                Date currentDate = calendar.getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                String formattedDate = dateFormat.format(currentDate);
-                new InsertRatingTask().execute(eid, userId, formattedDate, rating);
-                dismiss();
+                if (rating>1){
+                    Calendar calendar = Calendar.getInstance();
+                    Date currentDate = calendar.getTime();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String formattedDate = dateFormat.format(currentDate);
+                    new InsertRatingTask().execute(eid, userId, formattedDate, rating);
+                    dismiss();
+                }else{
+                    msgText.setText("Please rate "+ename+" between 1 and 5 , if do not want to rate the event at this time please click dismiss");
+                }
+
             }
+        });
+
+        dontaskagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float num = 0;
+                    Calendar calendar = Calendar.getInstance();
+                    Date currentDate = calendar.getTime();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String formattedDate = dateFormat.format(currentDate);
+                    new InsertRatingTask().execute(eid, userId, formattedDate,num );
+                    dismiss();
+                }
         });
 
         dismissButton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +90,7 @@ public class RateAppDialog extends Dialog {
             }
         });
     }
+
 
     private class InsertRatingTask extends AsyncTask<Object, Void, Boolean> {
         @Override

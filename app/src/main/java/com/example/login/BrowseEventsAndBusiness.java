@@ -127,6 +127,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         rc2.addItemDecoration(new SpaceItemDecoration(15));
 
         imageView = findViewById(R.id.imageView2);
+        imageView.setBackgroundResource(R.drawable.rounded_image_bg);
     }
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -262,7 +263,11 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
             List<Business> fetchedBusinesses = new ArrayList<>();
 
             try {
-                String selectQuery = "SELECT * FROM Business WHERE BusinessName LIKE '%"+searchterm+"%';";
+                String selectQuery = "SELECT * FROM Business WHERE BusinessName LIKE '%" + searchterm + "%' " +
+                        "OR Email LIKE '%" + searchterm + "%' " +
+                        "OR ContactNumber LIKE '%" + searchterm + "%' " +
+                        "OR Location LIKE '%" + searchterm + "%';";
+
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -391,7 +396,16 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
             List<Event> fetchedEvents = new ArrayList<>();
 
             try {
-                String selectQuery = "SELECT * FROM Events WHERE EventName LIKE '%"+searchterm+"%';";
+                String selectQuery = "SELECT * FROM Events WHERE " +
+                        "EventName LIKE '%" + searchterm + "%' " +
+                        "OR EventDate LIKE '%" + searchterm + "%' " +
+                        "OR EventTime LIKE '%" + searchterm + "%' " +
+                        "OR Venue LIKE '%" + searchterm + "%' " +
+                        "OR CapacityLimit LIKE '%" + searchterm + "%' " +
+                        "OR AgeRestriction LIKE '%" + searchterm + "%' " +
+                        "OR Recurring LIKE '%" + searchterm + "%' " +
+                        "OR Rating LIKE '%" + searchterm + "%' " +
+                        "OR Description LIKE '%" + searchterm + "%';";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery();
 

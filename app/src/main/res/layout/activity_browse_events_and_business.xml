@@ -70,7 +70,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RBusinessLocation"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.013" />
 
     <EditText
         android:id="@+id/edttxtSearch"
@@ -92,6 +92,7 @@
         android:layout_width="46dp"
         android:layout_height="45dp"
         android:layout_marginTop="12dp"
+        android:background="#F1F1F1"
         android:onClick="doSearch"
         app:layout_constraintEnd_toStartOf="@+id/edttxtSearch"
         app:layout_constraintTop_toTopOf="parent"

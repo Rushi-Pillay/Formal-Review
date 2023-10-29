@@ -15,17 +15,21 @@ public class RushenBusinessAdapter extends RecyclerView.Adapter<RushenBusinessAd
 
     private View.OnClickListener onClickListener;
     public static class BusinessViewHolder extends RecyclerView.ViewHolder {
-        public TextView lblName,location,Contactnum,email;
+        public TextView lblName,location,Contactnum,email,Type;
         public ImageView icon;
         public Business business;
 
+
         public BusinessViewHolder(@NonNull View view) {
             super(view);
+            Type = view.findViewById(R.id.RbusinessType);
             lblName = view.findViewById(R.id.RBusinessHeading);
             location = view.findViewById(R.id.RBusinessLocation);
             Contactnum = view.findViewById(R.id.RBusinessContact);
              email = view.findViewById(R.id.RBusinessEmail);
             icon = view.findViewById(R.id.RBusinessImageView);
+            icon.setBackgroundResource(R.drawable.rounded_image_bg);
+
         }
 
         public void setBusiness(Business business) {
@@ -40,6 +44,7 @@ public class RushenBusinessAdapter extends RecyclerView.Adapter<RushenBusinessAd
             location.setText(business.getLocation());
             Contactnum.setText(business.getContactNumber());
             email.setText(business.getEmail());
+            Type.setText(business.getType());
         }
 
 
@@ -52,7 +57,7 @@ public class RushenBusinessAdapter extends RecyclerView.Adapter<RushenBusinessAd
     @Override
     public BusinessViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.business_card, parent, false);
+                .inflate(R.layout.rushen_browse_events_businesscard, parent, false);
         return new BusinessViewHolder(view);
     }
 

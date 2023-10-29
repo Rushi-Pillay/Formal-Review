@@ -42,6 +42,7 @@ public class MainPage extends AppCompatActivity {
     private List<Business> business;
     private List<Event> events;
     private ImageView imgUser;
+    List<EventInfo> eventListg = new ArrayList<>();
     int userID ;
     private RateAppDialog rateAppDialog ;
     @Override
@@ -76,6 +77,7 @@ public class MainPage extends AppCompatActivity {
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
         new RetrieveAttendedEventsTask().execute();
+
 
 
         imageView.setOnClickListener(events->{
@@ -139,6 +141,12 @@ public class MainPage extends AppCompatActivity {
             clipboard.setPrimaryClip(clip);
         }
     }
+
+    public void viewclubsbarsandeventsonclick(View view) {
+        Intent intent = new Intent(MainPage.this,BrowseEventsAndBusiness.class);
+        startActivity(intent);
+    }
+
     private class RetrieveImageTask extends AsyncTask<Integer, Void, Bitmap> {
         @SuppressLint("SuspiciousIndentation")
         @Override
@@ -360,6 +368,7 @@ public class MainPage extends AppCompatActivity {
                     // Create an EventInfo object and add it to the list
                     EventInfo eventInfo = new EventInfo(eventId, eventName);
                     eventList.add(eventInfo);
+                    eventListg.add(eventInfo);
                 }
 
                 resultSet.close();
@@ -374,17 +383,15 @@ public class MainPage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<EventInfo> eventList) {
-            for (EventInfo e :eventList){
-                rateupstuff(e.EventName,e.EventID);
-            }
+            rateupstuff();
         }
     }
 
-    private void rateupstuff(String event,int eventid){
-            if (rateAppDialog == null) {
+    private void rateupstuff() {
+        for (EventInfo e :eventListg){
                 rateAppDialog = new RateAppDialog(MainPage.this);
-            }
-            rateAppDialog.SetInfo(eventid, event);
-            rateAppDialog.show();
+                rateAppDialog.SetInfo(e.EventID, e.EventName,userID);
+                rateAppDialog.show();
         }
+    }
 }

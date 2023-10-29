@@ -30,6 +30,7 @@ public class RushenEventAdaper extends RecyclerView.Adapter<RushenEventAdaper.Ev
             txtdesrip= view.findViewById(R.id.REventsDescription);
             txtdate = view.findViewById(R.id.ReventsDate);
             txtTime = view.findViewById(R.id.ReventTime);
+            icon1.setBackgroundResource(R.drawable.rounded_image_bg);
         }
 
         public void setEvents(Event event) {
@@ -59,7 +60,7 @@ public class RushenEventAdaper extends RecyclerView.Adapter<RushenEventAdaper.Ev
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.event_card, parent, false);
+                .inflate(R.layout.rushen_browse_events_eventscard, parent, false);
         return new EventViewHolder(view);
     }
 
