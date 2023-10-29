@@ -40,12 +40,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditBusinessProfile extends AppCompatActivity {
+    int count=0;
     EditText edtName, edtLocation, edtEmail,edtContact;
     RushenBusinessImageAdapter adapter;
     RecyclerView rcspecial;
     Button addphotos;
     SpecialAdapter adapter1;
     ImageView Businessdisplayimage;
+    RushenBusinessImageAdapter.BusinessViewHolder cvh;
     String name ;
     RecyclerView rc1;
     String location ;
@@ -53,7 +55,8 @@ public class EditBusinessProfile extends AppCompatActivity {
     String email ;
     String contactNum ;
     Connection connections;
-    Statement statement;
+    Statement statement;int delteid;
+
     ArrayList<BusinessImages> busimages;
 
     int UserID;
@@ -106,15 +109,69 @@ public class EditBusinessProfile extends AppCompatActivity {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        adapter.setOnClickListener(business -> {
+            count++;
+            cvh = (RushenBusinessImageAdapter.BusinessViewHolder) rc1.findContainingViewHolder(business);
+            if (count%2!=1){cvh.btndelete.setVisibility(View.INVISIBLE);}
+            if (count%2==1){
+                cvh.btndelete.setVisibility(View.VISIBLE);
+                if (cvh != null && cvh.business != null) {
+                    cvh.btndelete.setOnClickListener(v1 -> {
+                        delteid = cvh.business.imageID;
+                        new Deleteimage().execute(delteid);
+                    });
+                }
+            }
+
+
+        });
+
+    }
+    private class Deleteimage extends AsyncTask<Integer, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            Connection dbconnect = com.example.login.DatabaseConnection.getInstance().getConnection();
+            int name = params[0];
+
+            String sql = "DELETE FROM businessimage WHERE businessImageID = ?;";
+
+            try {
+                PreparedStatement preparedStatement = dbconnect.prepareStatement(sql);
+                preparedStatement.setInt(1, name);
+
+                preparedStatement.executeUpdate();
+
+                preparedStatement.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                copyToClipboard(e.getMessage());
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Toast.makeText(EditBusinessProfile.this, "Image deleted!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(EditBusinessProfile.this, "Error deleting image.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
+
     public void setuprecyclers(){
+        count =0;
         busimages = new ArrayList<>();
         adapter = new RushenBusinessImageAdapter(busimages);
         rc1 = findViewById(R.id.recylerineditbus);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rc1.setLayoutManager(layoutManager);
         rc1.setAdapter(adapter);
+
 
     }
 
@@ -171,6 +228,7 @@ public class EditBusinessProfile extends AppCompatActivity {
         }
 
     }
+
     private class RetrieveBusinessTask extends AsyncTask<Void, Void, List<BusinessImages>> {
         @Override
         protected List<BusinessImages> doInBackground(Void... voids) {

@@ -200,9 +200,7 @@
         android:layout_height="161dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnUpdateBusinessaccount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BTNAddSpecial"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/BTNAddSpecial" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
