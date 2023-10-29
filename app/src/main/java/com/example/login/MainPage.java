@@ -33,6 +33,7 @@ import java.util.List;
 
 public class MainPage extends AppCompatActivity {
     private BusinessAdapter adapter;
+
     private EventAdaper adapter2;
     private TextView check;
     private ImageView imageView;
