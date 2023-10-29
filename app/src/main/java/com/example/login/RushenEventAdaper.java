@@ -30,7 +30,7 @@ public class RushenEventAdaper extends RecyclerView.Adapter<RushenEventAdaper.Ev
             txtdesrip= view.findViewById(R.id.REventsDescription);
             txtdate = view.findViewById(R.id.ReventsDate);
             txtTime = view.findViewById(R.id.ReventTime);
-            icon1.setBackgroundResource(R.drawable.rounded_image_bg);
+
         }
 
         public void setEvents(Event event) {
