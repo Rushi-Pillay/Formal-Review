@@ -1,65 +1,75 @@
 package com.example.login;
 
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder> {
+public class RushenBusinessImageAdapter extends RecyclerView.Adapter<RushenBusinessImageAdapter.BusinessViewHolder> {
 
     private View.OnClickListener onClickListener;
     public static class BusinessViewHolder extends RecyclerView.ViewHolder {
-        public TextView lblName;
+
         public ImageView icon;
-        public Business business;
+        public BusinessImages business;
+        BusinessImages businessimage;
+        FloatingActionButton btndelete;
 
         public BusinessViewHolder(@NonNull View view) {
             super(view);
-            lblName = view.findViewById(R.id.textView6);
-            icon = view.findViewById(R.id.RBusinessImageView);
+            icon = view.findViewById(R.id.editBusinessImaeview);
+            btndelete = view.findViewById(R.id.floatingActionButton4);
 
         }
 
-        public void setBusiness(Business business) {
-            this.business = business;
 
-            if (business.getImage1() != null ) {
-                icon.setImageBitmap(business.getImage1());
+        public void setBusiness(BusinessImages business) {
+            this.business = business;
+            if (business.getImage() != null ) {
+                icon.setImageBitmap(business.getImage());
             } else {
                 icon.setImageResource(R.drawable.img);
             }
-            lblName.setText(business.getName());
+
         }
 
 
     }
-    private final List<Business> business;
-    public BusinessAdapter(List<Business> business ){
+    private final ArrayList<BusinessImages> business;
+    public RushenBusinessImageAdapter(ArrayList<com.example.login.BusinessImages> business ){
         this.business = business;
     }
     @NonNull
     @Override
     public BusinessViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.business_card, parent, false);
+                .inflate(R.layout.rushen_business_card, parent, false);
         return new BusinessViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BusinessViewHolder holder, int position) {
-               Business businesstemo = business.get(position);
-                holder.setBusiness(businesstemo);
-                holder.itemView.setOnClickListener(onClickListener);
+        BusinessImages businesstemo = business.get(position);
+        holder.setBusiness(businesstemo);
+        holder.itemView.setOnClickListener(onClickListener);
     }
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
+
 
     @Override
     public int getItemCount() {

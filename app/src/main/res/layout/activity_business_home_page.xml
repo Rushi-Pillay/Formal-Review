@@ -13,7 +13,7 @@
         tools:context=".BusinessHomePage">
 
         <TextView
-            android:id="@+id/txtBusinessName"
+            android:id="@+id/RBusinessHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -44,7 +44,7 @@
             android:layout_height="294dp"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtLocation" />
+            app:layout_constraintTop_toBottomOf="@+id/ReventsLocation" />
 
         <TextView
             android:id="@+id/textView11"
@@ -89,6 +89,7 @@
             android:layout_marginEnd="72dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/rounded_button"
+            android:onClick="BTNEditBusiness"
             android:text="Edit Profile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +121,7 @@
             app:srcCompat="@drawable/card_border" />
 
         <TextView
-            android:id="@+id/txtLocation"
+            android:id="@+id/ReventsLocation"
             android:layout_width="159dp"
             android:layout_height="51dp"
             android:layout_marginStart="8dp"
@@ -128,7 +129,7 @@
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
-            app:layout_constraintTop_toBottomOf="@+id/txtBusinessName" />
+            app:layout_constraintTop_toBottomOf="@+id/RBusinessHeading" />
 
         <ImageView
             android:id="@+id/imageView7"
@@ -136,7 +137,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtBusinessName"
+            app:layout_constraintTop_toBottomOf="@+id/RBusinessHeading"
             app:srcCompat="@drawable/location" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

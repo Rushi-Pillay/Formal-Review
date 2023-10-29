@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,10 +32,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainPage extends AppCompatActivity {
-    private BusinessAdapter adapter;
-
-    private EventAdaper adapter2;
+public class BrowseEventsAndBusiness extends AppCompatActivity {
+    private RushenBusinessAdapter adapter;
+    private RushenEventAdaper adapter2;
     private TextView check;
     private ImageView imageView;
     Connection connection;
@@ -43,68 +43,44 @@ public class MainPage extends AppCompatActivity {
     private List<Business> business;
     private List<Event> events;
     private ImageView imgUser;
-    List<EventInfo> eventListg = new ArrayList<>();
     int userID ;
-    private RateAppDialog rateAppDialog ;
+    private EditText search;
+    private String searchterm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
+        setContentView(R.layout.activity_browse_events_and_business);
         makeNice();
-        business = new ArrayList<>();
-        events = new ArrayList<>();
-        rateAppDialog = new RateAppDialog(this);
-
-        adapter = new BusinessAdapter(business);
-        adapter2 = new EventAdaper(events);
-        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        userID = sharedPref.getInt("user_id", -1);
-
-        rc1 = findViewById(R.id.RBrowseEventsBusiness_BusinessRecycler);
-        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rc1.setLayoutManager(layoutManager);
-
-        rc1.setAdapter(adapter);
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rc2.setLayoutManager(layoutManager2);
-        rc2.setAdapter(adapter2);
-        rc1.addItemDecoration(new SpaceItemDecoration(5));
-        rc2.addItemDecoration(new SpaceItemDecoration(15));
-
-        imageView = findViewById(R.id.imageView2);
-
+        setuprecyclers();
         new RetrieveImageTask().execute(userID);
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
-        new RetrieveAttendedEventsTask().execute();
-
-
 
         imageView.setOnClickListener(events->{
-            Intent intent = new Intent(MainPage.this,ViewUserAccount.class);
+            Intent intent = new Intent(BrowseEventsAndBusiness.this,ViewUserAccount.class);
             startActivity(intent);
         });
 
         adapter.setOnClickListener(event -> {
             try {
-                BusinessAdapter.BusinessViewHolder viewHolder = (BusinessAdapter.BusinessViewHolder) rc1.findContainingViewHolder(event);
+                RushenBusinessAdapter.BusinessViewHolder viewHolder = (RushenBusinessAdapter.BusinessViewHolder) rc1.findContainingViewHolder(event);
                 if (viewHolder != null && viewHolder.business != null) {
                     SharedPreferences sharedPref2 = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor2 = sharedPref2.edit();
                     editor2.putInt("businessID", viewHolder.business.getBusinessID());
                     editor2.apply();
-                    Intent intent = new Intent(MainPage.this,ViewBusinessProfile.class);
+                    Intent intent = new Intent(BrowseEventsAndBusiness.this,ViewBusinessProfile.class);
                     startActivity(intent);
                 } else {
-
-                    Toast.makeText(MainPage.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
+                    // Handle null viewHolder or null business object.
+                    // You can log an error or show a Toast message for debugging.
+                    Toast.makeText(BrowseEventsAndBusiness.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 copyToClipboard(e.getMessage());
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
+                // Handle any other exceptions that may occur.
             }
         });
         adapter2.setOnClickListener(event -> {
@@ -113,19 +89,14 @@ public class MainPage extends AppCompatActivity {
                 if (viewHolder != null && viewHolder.event != null) {
                     SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor3 = sharedPref3.edit();
-
-
                     editor3.putInt("EventID", viewHolder.event.getEventID());
-
-
                     editor3.putString("EventName", viewHolder.event.getName());
-
                     editor3.apply();
-                    Intent intent = new Intent(MainPage.this, AttendEvent.class);
+                    Intent intent = new Intent(BrowseEventsAndBusiness.this, AttendEvent.class);
                     startActivity(intent);
                 } else {
 
-                    Toast.makeText(MainPage.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BrowseEventsAndBusiness.this, "Invalid item clicked", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -134,6 +105,27 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setuprecyclers(){
+        business = new ArrayList<>();
+        events = new ArrayList<>();
+        adapter = new RushenBusinessAdapter(business);
+        adapter2 = new RushenEventAdaper(events);
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        userID = sharedPref.getInt("user_id", -1);
+
+        rc1 = findViewById(R.id.RBrowseEventsBusiness_BusinessRecycler);
+        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rc1.setLayoutManager(layoutManager);
+        rc1.setAdapter(adapter);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rc2.setLayoutManager(layoutManager2);
+        rc2.setAdapter(adapter2);
+        rc1.addItemDecoration(new SpaceItemDecoration(15));
+        rc2.addItemDecoration(new SpaceItemDecoration(15));
+        imageView = findViewById(R.id.imageView2);
     }
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -143,9 +135,13 @@ public class MainPage extends AppCompatActivity {
         }
     }
 
-    public void viewclubsbarsandeventsonclick(View view) {
-        Intent intent = new Intent(MainPage.this,BrowseEventsAndBusiness.class);
-        startActivity(intent);
+    public void doSearch(View view) {
+        setuprecyclers();
+        search = findViewById(R.id.edttxtSearch);
+        searchterm = String.valueOf(search.getText());
+        new RetrieveSearchedBusinessTask().execute();
+        new RetrieveSearchEventTask().execute();
+
     }
 
     private class RetrieveImageTask extends AsyncTask<Integer, Void, Bitmap> {
@@ -165,7 +161,7 @@ public class MainPage extends AppCompatActivity {
                 if (resultSet.next()) {
                     byte[] imageData = resultSet.getBytes("DisplayPicture");
                     if (imageData!=null)
-                    bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                        bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 } else {
 
                     Log.d("RetrieveImageTask", "Image not found for the specified user ID.");
@@ -173,7 +169,7 @@ public class MainPage extends AppCompatActivity {
 
                 resultSet.close();
                 preparedStatement.close();
-               //connection.close();
+                //connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -227,7 +223,75 @@ public class MainPage extends AppCompatActivity {
                         Busnesstemp.setImage1(bitmap1);
                         fetchedBusinesses.add(Busnesstemp);
                     } else {
+                        // Handle the case where imageData1 is null or empty.
+                        // For example, you might want to create Busnesstemp without setting the image.
+
                         Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
+
+                        fetchedBusinesses.add(Busnesstemp);
+                    }
+
+
+                }
+
+                resultSet.close();
+                preparedStatement.close();
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return fetchedBusinesses;
+        }
+
+        @Override
+        protected void onPostExecute(List<Business> fetchedBusinesses) {
+            if (fetchedBusinesses != null && !fetchedBusinesses.isEmpty()) {
+
+                business.addAll(fetchedBusinesses);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+    private class RetrieveSearchedBusinessTask extends AsyncTask<Void, Void, List<Business>> {
+        @Override
+        protected List<Business> doInBackground(Void... voids) {
+
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            List<Business> fetchedBusinesses = new ArrayList<>();
+
+            try {
+                String selectQuery = "SELECT * FROM Business WHERE BusinessName LIKE '%" + searchterm + "%' " +
+                        "OR Email LIKE '%" + searchterm + "%' " +
+                        "OR ContactNumber LIKE '%" + searchterm + "%' " +
+                        "OR Location LIKE '%" + searchterm + "%';";
+
+                PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int businessID = resultSet.getInt("BusinessID");
+                    String Email = resultSet.getString("Email");
+                    String password = resultSet.getString("Password");
+                    String BusinessName = resultSet.getString("BusinessName");
+                    String ContactNumber = resultSet.getString("ContactNumber");
+
+                    int Capacity = resultSet.getInt("CapacityLimit");
+                    String BusType = resultSet.getString("BusType");
+                    String Location = resultSet.getString("Location");
+                    byte[] imageData1 = resultSet.getBytes("Image1");
+
+                    if (imageData1 != null && imageData1.length > 0) { // Check if imageData1 has a value
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password,  Capacity, BusType, Location);
+                        Busnesstemp.setImage1(bitmap1);
+                        fetchedBusinesses.add(Busnesstemp);
+                    } else {
+                        // Handle the case where imageData1 is null or empty.
+                        // For example, you might want to create Busnesstemp without setting the image.
+
+                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
+
                         fetchedBusinesses.add(Busnesstemp);
                     }
 
@@ -255,7 +319,6 @@ public class MainPage extends AppCompatActivity {
     }
 
 
-
     private class RetrieveEventTask extends AsyncTask<Void, Void, List<Event>> {
         @Override
         protected List<Event> doInBackground(Void... voids) {
@@ -276,23 +339,28 @@ public class MainPage extends AppCompatActivity {
 
                     String venue = resultSet.getString("Venue");
                     int capacity = resultSet.getInt("CapacityLimit");
-                    boolean age = resultSet.getBoolean("AgeRestriction");
-                    int reoccuring = resultSet.getInt("Recurring");
+                    int age = resultSet.getInt("AgeRestriction");
+                    String reoccuring = resultSet.getString("Recurring");
                     int rating = resultSet.getInt("Rating");
                     String desc = resultSet.getString("Description");
                     byte[] imageData1 = resultSet.getBytes("Image1");
+                    boolean bage =false;
+                    int irec = Integer.parseInt(reoccuring);
+                    if (age == 1){
+                        bage = true;
+                    }
 
                     if (imageData1 != null && imageData1.length > 0) {
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                         Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, bage, irec, desc);
 
-                         temp.setImage1(bitmap1);
-                         temp.setRating(rating);
+                        temp.setImage1(bitmap1);
+                        temp.setRating(rating);
                         fetchedEvents.add(temp);
 
                     }
                     else{
-                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, age, reoccuring, desc);
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, bage, irec, desc);
                         temp.setRating(rating);
                         fetchedEvents.add(temp);
                     }
@@ -301,7 +369,83 @@ public class MainPage extends AppCompatActivity {
 
                 resultSet.close();
                 preparedStatement.close();
-               // connection.close();
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return fetchedEvents;
+        }
+
+        @Override
+        protected void onPostExecute(List<Event> fetchedEvents) {
+            if (fetchedEvents != null && !fetchedEvents.isEmpty()) {
+                events.addAll(fetchedEvents);
+                adapter2.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private class RetrieveSearchEventTask extends AsyncTask<Void, Void, List<Event>> {
+        @Override
+        protected List<Event> doInBackground(Void... voids) {
+
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            List<Event> fetchedEvents = new ArrayList<>();
+
+            try {
+                String selectQuery = "SELECT * FROM Events WHERE " +
+                        "EventName LIKE '%" + searchterm + "%' " +
+                        "OR EventDate LIKE '%" + searchterm + "%' " +
+                        "OR EventTime LIKE '%" + searchterm + "%' " +
+                        "OR Venue LIKE '%" + searchterm + "%' " +
+                        "OR CapacityLimit LIKE '%" + searchterm + "%' " +
+                        "OR AgeRestriction LIKE '%" + searchterm + "%' " +
+                        "OR Recurring LIKE '%" + searchterm + "%' " +
+                        "OR Rating LIKE '%" + searchterm + "%' " +
+                        "OR Description LIKE '%" + searchterm + "%';";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int EventID = resultSet.getInt("EventID");
+                    String name = resultSet.getString("EventName");
+                    String eventdate = resultSet.getString("EventDate");
+                    String eventtime = resultSet.getString("EventTime");
+
+                    String venue = resultSet.getString("Venue");
+                    int capacity = resultSet.getInt("CapacityLimit");
+                    int age = resultSet.getInt("AgeRestriction");
+                    String reoccuring = resultSet.getString("Recurring");
+                    int rating = resultSet.getInt("Rating");
+                    String desc = resultSet.getString("Description");
+                    byte[] imageData1 = resultSet.getBytes("Image1");
+                    boolean bage =false;
+                    int irec = Integer.parseInt(reoccuring);
+                    if (age == 1){
+                        bage = true;
+                    }
+
+                    if (imageData1 != null && imageData1.length > 0) {
+                        Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, bage, irec, desc);
+
+                        temp.setImage1(bitmap1);
+                        temp.setRating(rating);
+                        fetchedEvents.add(temp);
+
+                    }
+                    else{
+                        Event temp = new Event(EventID, name, eventdate, eventtime, venue, capacity, bage, irec, desc);
+                        temp.setRating(rating);
+                        fetchedEvents.add(temp);
+                    }
+
+                }
+
+                resultSet.close();
+                preparedStatement.close();
+                // connection.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -336,63 +480,6 @@ public class MainPage extends AppCompatActivity {
         }
     }
 
-    public class RetrieveAttendedEventsTask extends AsyncTask<Void, Void, List<EventInfo>> {
 
-        @Override
-        protected List<EventInfo> doInBackground(Void... voids) {
-            List<EventInfo> eventList = new ArrayList<>();
-            Connection connection = DatabaseConnection.getInstance().getConnection();
 
-            try {
-                String selectQuery = "SELECT DISTINCT ea.EventID, e.EventName " +
-                        "FROM eventattendees ea " +
-                        "JOIN events e ON ea.EventID = e.EventID " +
-                        "LEFT JOIN eventrating r ON r.EventID = ea.EventID AND r.UserID = ea.UserID " +
-                        "WHERE ea.UserID = ? " +
-                        "  AND (" +
-                        "      NOT EXISTS (" +
-                        "          SELECT 1 " +
-                        "          FROM eventrating er " +
-                        "          WHERE er.EventID = ea.EventID AND er.UserID = ea.UserID AND er.UserID" +
-                        "      )" +
-                        "      OR e.EventDate > CURRENT_DATE" +
-                        "  );";
-
-                PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
-                preparedStatement.setInt(1, userID);
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    int eventId = resultSet.getInt("EventID");
-                    String eventName = resultSet.getString("EventName");
-
-                    // Create an EventInfo object and add it to the list
-                    EventInfo eventInfo = new EventInfo(eventId, eventName);
-                    eventList.add(eventInfo);
-                    eventListg.add(eventInfo);
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            return eventList;
-        }
-
-        @Override
-        protected void onPostExecute(List<EventInfo> eventList) {
-            rateupstuff();
-        }
-    }
-
-    private void rateupstuff() {
-        for (EventInfo e :eventListg){
-                rateAppDialog = new RateAppDialog(MainPage.this);
-                rateAppDialog.SetInfo(e.EventID, e.EventName,userID);
-                rateAppDialog.show();
-        }
-    }
 }

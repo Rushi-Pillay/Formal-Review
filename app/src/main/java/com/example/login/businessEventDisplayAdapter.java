@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,7 @@ public class businessEventDisplayAdapter extends RecyclerView.Adapter<businessEv
             super(view);
             lblEventName = view.findViewById(R.id.txtEventCard);
             EventImage = view.findViewById(R.id.imgEventCard);
-            lbldate = view.findViewById(R.id.txtDate);
+            lbldate = view.findViewById(R.id.ReventsDate);
 
         }
 

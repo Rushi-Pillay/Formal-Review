@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="emailEditText" type="id" />
+    <item name="btnupdateimage" type="id" />
+    <item name="DisplayIM" type="id" />
+    <item name="editthebusinessname" type="id" />
+    <item name="txtheadingUpdatebusinessaccount" type="id" />
+    <item name="btneditaddPhotos" type="id" />
+    <item name="btnUpdateBusinessaccount" type="id" />
+    <item name="recylerineditbus" type="id" />
+</resources>

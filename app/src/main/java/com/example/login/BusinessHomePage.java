@@ -21,7 +21,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,11 +49,11 @@ public class BusinessHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         makeNice();
         setContentView(R.layout.activity_business_home_page);
-        txtBusinessName = findViewById(R.id.txtBusinessName);
+        txtBusinessName = findViewById(R.id.RBusinessHeading);
         imgDisplayPic2 = findViewById(R.id.imgBusDisplayPic);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
         businessID = sharedPref.getInt("businessID", -1);
-        txtLocation = findViewById(R.id.txtLocation);
+        txtLocation = findViewById(R.id.ReventsLocation);
         events = new ArrayList<>();
         business = new ArrayList<>();
         specials = new ArrayList<>();
@@ -103,6 +102,12 @@ public class BusinessHomePage extends AppCompatActivity {
         });
 
     }
+
+    public void BTNEditBusiness(View view) {
+        Intent intent = new Intent(BusinessHomePage.this,EditBusinessProfile.class);
+        startActivity(intent);
+    }
+
     private class imageQueryAsyncTask extends  AsyncTask<Integer, Void, List<BusinessImage>> {
 
         @Override

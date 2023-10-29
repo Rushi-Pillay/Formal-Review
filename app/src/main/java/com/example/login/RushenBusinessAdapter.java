@@ -11,18 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder> {
+public class RushenBusinessAdapter extends RecyclerView.Adapter<RushenBusinessAdapter.BusinessViewHolder> {
 
     private View.OnClickListener onClickListener;
     public static class BusinessViewHolder extends RecyclerView.ViewHolder {
-        public TextView lblName;
+        public TextView lblName,location,Contactnum,email,Type;
         public ImageView icon;
         public Business business;
 
+
         public BusinessViewHolder(@NonNull View view) {
             super(view);
-            lblName = view.findViewById(R.id.textView6);
+            Type = view.findViewById(R.id.RbusinessType);
+            lblName = view.findViewById(R.id.RBusinessHeading);
+            location = view.findViewById(R.id.RBusinessLocation);
+            Contactnum = view.findViewById(R.id.RBusinessContact);
+             email = view.findViewById(R.id.RBusinessEmail);
             icon = view.findViewById(R.id.RBusinessImageView);
+            icon.setBackgroundResource(R.drawable.rounded_image_bg);
 
         }
 
@@ -35,19 +41,23 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
                 icon.setImageResource(R.drawable.img);
             }
             lblName.setText(business.getName());
+            location.setText(business.getLocation());
+            Contactnum.setText(business.getContactNumber());
+            email.setText(business.getEmail());
+            Type.setText(business.getType());
         }
 
 
     }
     private final List<Business> business;
-    public BusinessAdapter(List<Business> business ){
+    public RushenBusinessAdapter(List<Business> business ){
         this.business = business;
     }
     @NonNull
     @Override
     public BusinessViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.business_card, parent, false);
+                .inflate(R.layout.rushen_browse_events_businesscard, parent, false);
         return new BusinessViewHolder(view);
     }
 
