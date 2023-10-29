@@ -125,9 +125,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         rc2.setAdapter(adapter2);
         rc1.addItemDecoration(new SpaceItemDecoration(15));
         rc2.addItemDecoration(new SpaceItemDecoration(15));
-
         imageView = findViewById(R.id.imageView2);
-        imageView.setBackgroundResource(R.drawable.rounded_image_bg);
     }
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
