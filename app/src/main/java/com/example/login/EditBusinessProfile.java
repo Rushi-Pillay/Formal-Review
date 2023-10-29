@@ -48,6 +48,7 @@ public class EditBusinessProfile extends AppCompatActivity {
     SpecialAdapter adapter1;
     ImageView Businessdisplayimage;
     RushenBusinessImageAdapter.BusinessViewHolder cvh;
+    RushenBusinessImageAdapter.BusinessViewHolder lastClickedViewHolder = null;
     String name ;
     RecyclerView rc1;
     String location ;
@@ -111,20 +112,17 @@ public class EditBusinessProfile extends AppCompatActivity {
         });
 
         adapter.setOnClickListener(business -> {
-            count++;
             cvh = (RushenBusinessImageAdapter.BusinessViewHolder) rc1.findContainingViewHolder(business);
-            if (count%2!=1){cvh.btndelete.setVisibility(View.INVISIBLE);}
-            if (count%2==1){
+                if (lastClickedViewHolder != null) {lastClickedViewHolder.btndelete.setVisibility(View.INVISIBLE);}
                 cvh.btndelete.setVisibility(View.VISIBLE);
                 if (cvh != null && cvh.business != null) {
                     cvh.btndelete.setOnClickListener(v1 -> {
                         delteid = cvh.business.imageID;
                         new Deleteimage().execute(delteid);
+                        this.recreate();
                     });
                 }
-            }
-
-
+            lastClickedViewHolder = cvh;
         });
 
     }
@@ -155,7 +153,6 @@ public class EditBusinessProfile extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(EditBusinessProfile.this, "Image deleted!", Toast.LENGTH_SHORT).show();
-
             } else {
                 Toast.makeText(EditBusinessProfile.this, "Error deleting image.", Toast.LENGTH_SHORT).show();
             }
@@ -164,7 +161,6 @@ public class EditBusinessProfile extends AppCompatActivity {
 
 
     public void setuprecyclers(){
-        count =0;
         busimages = new ArrayList<>();
         adapter = new RushenBusinessImageAdapter(busimages);
         rc1 = findViewById(R.id.recylerineditbus);
