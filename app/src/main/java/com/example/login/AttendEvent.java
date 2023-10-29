@@ -1,6 +1,7 @@
 package com.example.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +48,7 @@ public class AttendEvent extends AppCompatActivity {
     private List<Users> usersList1;
     private FriendAdapter2 Fadapter;
     int userID;
+    Drawable redbtn,greenbtn;
     int EventIDtemp;
     private boolean isAttending = false;
 
@@ -54,6 +57,9 @@ public class AttendEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attend_event);
         makeNice();
+
+        redbtn = getDrawable(R.drawable.roundbuttonred);
+        greenbtn = getDrawable(R.drawable.roundbtngreen);
 
         SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
         String eventName = sharedPref3.getString("EventName", "");
@@ -147,10 +153,10 @@ public class AttendEvent extends AppCompatActivity {
             isAttending = attending;
             if (attending) {
                 attend.setText("Unattend the event");
-                attend.setBackgroundColor(Color.parseColor("#FF4D4D"));
+                attend.setBackground(redbtn);
             } else {
-                attend.setText("Are you going to attend the event?");
-                attend.setBackgroundColor(Color.parseColor("#1DB954"));
+                attend.setText("Attend Event");
+                attend.setBackground(greenbtn);
             }
         }
     }
@@ -193,10 +199,10 @@ public class AttendEvent extends AppCompatActivity {
                 isAttending = !isAttending;
                 if (isAttending) {
                     attend.setText("Unattend the event");
-                    attend.setBackgroundColor(Color.parseColor("#FF4D4D"));
+                    attend.setBackground(redbtn);
                 } else {
-                    attend.setText("Are you going to attend the event?");
-                    attend.setBackgroundColor(Color.parseColor("#1DB954"));
+                    attend.setText("Attend Event");
+                    attend.setBackground(greenbtn);
                 }
             } else {
                 Toast.makeText(AttendEvent.this, "Operation failed", Toast.LENGTH_SHORT).show();
