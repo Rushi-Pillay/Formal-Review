@@ -331,8 +331,8 @@ public class AttendEvent extends AppCompatActivity {
         protected void onPostExecute(Event eventDetails) {
             if (eventDetails != null) {
                 EventNamelbl.setText(eventDetails.getName());
-                Date.setText(eventDetails.getDate());
-                Time.setText(eventDetails.getTime());
+                Date.setText("Date: "+eventDetails.getDate());
+                Time.setText("Time: "+eventDetails.getTime());
                 Venue.setText(eventDetails.getVenue());
                 rb.setRating(eventDetails.getRating());
 

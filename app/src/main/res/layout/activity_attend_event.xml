@@ -68,6 +68,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="26dp"
         android:text="Current Rating"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageScrollView" />
 
@@ -75,7 +76,7 @@
         android:id="@+id/ratingBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="7dp"
         android:background="#F9F9F9"
         android:isIndicator="true"
@@ -86,35 +87,31 @@
         app:layout_constraintStart_toEndOf="@+id/CurrentRating"
         app:layout_constraintTop_toBottomOf="@+id/imageScrollView" />
 
-    <TextView
-        android:id="@+id/DateandTimeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="19dp"
-        android:text="Date And Time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CurrentRating" />
+    <!-- Venue Labels -->
+
+    <!-- Friends Going Label and RecyclerView -->
 
     <TextView
         android:id="@+id/Datelbl"
-        android:layout_width="116dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="2dp"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Date"
-        app:layout_constraintStart_toEndOf="@+id/DateandTimeLabel"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
-
-    <!-- Venue Labels -->
 
     <TextView
         android:id="@+id/Timelbl"
-        android:layout_width="142dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="2dp"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="8dp"
         android:text="Time"
+        android:textColor="#000000"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/Datelbl"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
 
@@ -123,20 +120,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="16dp"
         android:text="Venue"
+        android:textColor="#000000"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DateandTimeLabel" />
-
-    <!-- Friends Going Label and RecyclerView -->
+        app:layout_constraintTop_toBottomOf="@+id/Timelbl" />
 
     <TextView
         android:id="@+id/venuelbl"
         android:layout_width="273dp"
         android:layout_height="22dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="Venue"
+        android:textColor="#000000"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/Venuelbl"
         app:layout_constraintTop_toBottomOf="@+id/Timelbl" />
 
@@ -147,6 +146,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Your Friends Who Are going"
+        android:textColor="#000000"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Venuelbl" />
 
