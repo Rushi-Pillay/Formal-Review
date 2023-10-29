@@ -1,5 +1,7 @@
 package com.example.login;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
@@ -29,6 +31,7 @@ public class CreatePersonalAccount extends AppCompatActivity {
     boolean found =false;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,21 +40,11 @@ public class CreatePersonalAccount extends AppCompatActivity {
         text = (TextView) findViewById(R.id.usernameLabel);
         errorText = (TextView) findViewById(R.id.edtEmail);
          connection = DatabaseConnection.getInstance().getConnection();
-        CheckBox showPasswordCheckbox = findViewById(R.id.showPasswordCheckBox);
+
         EditText passwordEditText = findViewById(R.id.edtPass);
         editText = findViewById(R.id.nameEditText);
 
-        showPasswordCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int selection = passwordEditText.getSelectionEnd();
-            if (isChecked) {
-                // Show password
-                passwordEditText.setTransformationMethod(null);
-            } else {
-                // Hide password
-                passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
-            }
-            passwordEditText.setSelection(selection);
-        });
+
 
     }
 
@@ -79,6 +72,9 @@ public class CreatePersonalAccount extends AppCompatActivity {
                 statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 statement.executeUpdate(insQuery);
                 Toast.makeText(this,"Account Created!",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this,MainActivity.class);
+                finish();
+                startActivity(intent);
             }
             Toast.makeText(this, "Please use a different email, this one is already in use", Toast.LENGTH_SHORT).show();
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -228,6 +229,10 @@ public class CreateBusinessAccount extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(CreateBusinessAccount.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreateBusinessAccount.this, MainActivity.class);
+                finish();
+                startActivity(intent);
+
             } else {
                 Toast.makeText(CreateBusinessAccount.this, "Error creating account.", Toast.LENGTH_SHORT).show();
             }

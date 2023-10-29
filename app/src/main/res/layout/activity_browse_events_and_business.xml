@@ -87,17 +87,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="46dp"
-        android:layout_height="45dp"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="12dp"
-        android:background="#F1F1F1"
-        android:onClick="doSearch"
-        app:layout_constraintEnd_toStartOf="@+id/edttxtSearch"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        app:srcCompat="@android:drawable/ic_menu_search" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

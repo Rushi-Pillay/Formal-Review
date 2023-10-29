@@ -219,15 +219,15 @@ public class BusinessViewEvents extends AppCompatActivity {
                 ImageView eventImage2 = findViewById(R.id.image2);
                 ImageView eventImage3 = findViewById(R.id.image3);
 
-                // Check if image1 from database is not null, then set it to ImageView
+
                 if (eventDetails.getImage1() != null) {
                     eventImage1.setImageBitmap(eventDetails.getImage1());
-                    eventImage1.setVisibility(View.VISIBLE); // ensure the ImageView is visible
+                    eventImage1.setVisibility(View.VISIBLE);
                 } else {
-                    eventImage1.setVisibility(View.GONE); // hide ImageView if no image
+                    eventImage1.setVisibility(View.GONE);
                 }
 
-                // Check if image2 from database is not null, then set it to ImageView
+
                 if (eventDetails.getImage2() != null) {
                     eventImage2.setImageBitmap(eventDetails.getImage2());
                     eventImage2.setVisibility(View.VISIBLE);

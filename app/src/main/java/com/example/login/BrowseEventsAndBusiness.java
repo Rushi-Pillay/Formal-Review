@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -55,6 +57,25 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         new RetrieveImageTask().execute(userID);
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
+        search = findViewById(R.id.edttxtSearch);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Start the search when text changes
+                searchterm = s.toString();
+                doSearch();
+            }
+        });
 
         imageView.setOnClickListener(events->{
             Intent intent = new Intent(BrowseEventsAndBusiness.this,ViewUserAccount.class);
@@ -137,10 +158,10 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         }
     }
 
-    public void doSearch(View view) {
-        setuprecyclers();
-        search = findViewById(R.id.edttxtSearch);
-        searchterm = String.valueOf(search.getText());
+    public void doSearch() {
+
+        business.clear(); // Clear existing data
+        events.clear();    // Clear existing data
         new RetrieveSearchedBusinessTask().execute();
         new RetrieveSearchEventTask().execute();
 
@@ -255,7 +276,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
             }
         }
     }
-    private class RetrieveSearchedBusinessTask extends AsyncTask<Void, Void, List<Business>> {
+    private class RetrieveSearchedBusinessTask extends AsyncTask<Void, Void, List<Business> > {
         @Override
         protected List<Business> doInBackground(Void... voids) {
 
@@ -265,8 +286,9 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
             try {
                 String selectQuery = "SELECT * FROM Business WHERE BusinessName LIKE '%" + searchterm + "%' " +
                         "OR Email LIKE '%" + searchterm + "%' " +
-                        "OR ContactNumber LIKE '%" + searchterm + "%' " +
-                        "OR Location LIKE '%" + searchterm + "%';";
+
+                        "OR Location LIKE '%" + searchterm + "%' " +
+                        "OR BusType LIKE '%" + searchterm + "%';"; // Add BusType search
 
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -277,33 +299,24 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
                     String password = resultSet.getString("Password");
                     String BusinessName = resultSet.getString("BusinessName");
                     String ContactNumber = resultSet.getString("ContactNumber");
-
                     int Capacity = resultSet.getInt("CapacityLimit");
-                    String BusType = resultSet.getString("BusType");
+                    String BusType = resultSet.getString("BusType"); // Retrieve BusType
                     String Location = resultSet.getString("Location");
                     byte[] imageData1 = resultSet.getBytes("Image1");
 
-                    if (imageData1 != null && imageData1.length > 0) { // Check if imageData1 has a value
+                    if (imageData1 != null && imageData1.length > 0) {
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
-                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password,  Capacity, BusType, Location);
+                        Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
                         Busnesstemp.setImage1(bitmap1);
                         fetchedBusinesses.add(Busnesstemp);
                     } else {
-                        // Handle the case where imageData1 is null or empty.
-                        // For example, you might want to create Busnesstemp without setting the image.
-
                         Business Busnesstemp = new Business(businessID, Email, BusinessName, ContactNumber, password, Capacity, BusType, Location);
-
                         fetchedBusinesses.add(Busnesstemp);
                     }
-
-
                 }
 
                 resultSet.close();
                 preparedStatement.close();
-
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -313,7 +326,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Business> fetchedBusinesses) {
             if (fetchedBusinesses != null && !fetchedBusinesses.isEmpty()) {
-
+                business.clear();
                 business.addAll(fetchedBusinesses);
                 adapter.notifyDataSetChanged();
             }

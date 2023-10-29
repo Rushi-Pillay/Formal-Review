@@ -39,7 +39,7 @@ public class BusinessHomePage extends AppCompatActivity {
     private RecyclerView rc2;
     private RecyclerView rc3;
     private Button Addevent;
-    private TextView txtBusinessName,txtLocation;
+    private TextView txtBusinessName, txtLocation;
     private CircleImageView imgDisplayPic2;
     private List<Specials> specials;
     private List<BusinessImage> imageList;
@@ -65,9 +65,9 @@ public class BusinessHomePage extends AppCompatActivity {
         rc1 = findViewById(R.id.rvSpecials);
         rc2 = findViewById(R.id.rcEvents);
         rc3 = findViewById(R.id.rvImages);
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rc2.setLayoutManager(layoutManager2);
         rc1.setLayoutManager(layoutManager);
         rc3.setLayoutManager(layoutManager1);
@@ -82,33 +82,28 @@ public class BusinessHomePage extends AppCompatActivity {
         new imageQueryAsyncTask().execute(businessID);
         new EventQueryTask().execute(businessID);
         Addevent = findViewById(R.id.button2);
-        adapter2.setOnClickListener(event->
-        {
-            businessEventDisplayAdapter.BusinessEventViewHolder viewHolder = (businessEventDisplayAdapter.BusinessEventViewHolder)rc2.findContainingViewHolder(event);
+        adapter2.setOnClickListener(event -> {
+            businessEventDisplayAdapter.BusinessEventViewHolder viewHolder = (businessEventDisplayAdapter.BusinessEventViewHolder) rc2.findContainingViewHolder(event);
             SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor3 = sharedPref3.edit();
             editor3.putInt("EventID", viewHolder.event.getEventID());
-
-
             editor3.putString("EventName", viewHolder.event.getName());
-
             editor3.apply();
-            Intent intent = new Intent(this,BusinessViewEvents.class);
+            Intent intent = new Intent(this, BusinessViewEvents.class);
             startActivity(intent);
         });
-        Addevent.setOnClickListener(event->{
-            Intent intent = new Intent(BusinessHomePage.this,EventAdd.class);
+        Addevent.setOnClickListener(event -> {
+            Intent intent = new Intent(BusinessHomePage.this, EventAdd.class);
             startActivity(intent);
         });
-
     }
 
     public void BTNEditBusiness(View view) {
-        Intent intent = new Intent(BusinessHomePage.this,EditBusinessProfile.class);
+        Intent intent = new Intent(BusinessHomePage.this, EditBusinessProfile.class);
         startActivity(intent);
     }
 
-    private class imageQueryAsyncTask extends  AsyncTask<Integer, Void, List<BusinessImage>> {
+    private class imageQueryAsyncTask extends AsyncTask<Integer, Void, List<BusinessImage>> {
 
         @Override
         protected List<BusinessImage> doInBackground(Integer... integers) {
@@ -118,39 +113,37 @@ public class BusinessHomePage extends AppCompatActivity {
             try {
                 String sql = "SELECT image FROM businessimage WHERE businessID = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1,businessID);
+                preparedStatement.setInt(1, businessID);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next())
-                {
-                  byte[] image = resultSet.getBytes("image");
-                  Bitmap bitmap1 = BitmapFactory.decodeByteArray(image, 0, image.length);
-                  BusinessImage  temp = new BusinessImage(bitmap1);
-                  fetchedimages.add(temp);
+                while (resultSet.next()) {
+                    byte[] image = resultSet.getBytes("image");
+                    Bitmap bitmap1 = BitmapFactory.decodeByteArray(image, 0, image.length);
+                    BusinessImage temp = new BusinessImage(bitmap1);
+                    fetchedimages.add(temp);
                 }
                 resultSet.close();
                 preparedStatement.close();
-
             } catch (Exception e) {
-                Log.d("BusinessHomePage", "Number of specials: " + fetchedimages.size());
+                Log.d("BusinessHomePage", "Number of images: " + fetchedimages.size());
             }
-
             return fetchedimages;
         }
 
         @Override
-        protected void onPostExecute(List<BusinessImage> images)
-        {
-            if (images!=null)
-            {
+        protected void onPostExecute(List<BusinessImage> images) {
+            if (images != null && !images.isEmpty()) {
                 imageList.addAll(images);
                 rc3.setAdapter(imageAdapter);
                 imageAdapter.notifyDataSetChanged();
-
+            } else {
+                // If there are no images, hide the RecyclerView and set a message
+                rc3.setVisibility(View.GONE);
+                // Example: someTextView.setText("No images available.");
             }
         }
-
     }
-    private class specialsQueryAsyncTask extends  AsyncTask<Integer, Void, List<Specials>> {
+
+    private class specialsQueryAsyncTask extends AsyncTask<Integer, Void, List<Specials>> {
 
         @Override
         protected List<Specials> doInBackground(Integer... integers) {
@@ -160,41 +153,40 @@ public class BusinessHomePage extends AppCompatActivity {
             try {
                 String sql = "SELECT * FROM Specials WHERE businessID = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setInt(1,businessID);
+                preparedStatement.setInt(1, businessID);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next())
-                {
+                while (resultSet.next()) {
                     int specID = resultSet.getInt("specID");
                     String name = resultSet.getString("specName");
                     String desc = resultSet.getString("specDescription");
                     int imgNum = resultSet.getInt("specImg");
 
-                    Specials specials = new Specials(specID,name,desc,imgNum);
+                    Specials specials = new Specials(specID, name, desc, imgNum);
                     fetchedSpecials.add(specials);
                 }
                 resultSet.close();
                 preparedStatement.close();
-
             } catch (Exception e) {
                 Log.d("BusinessHomePage", "Number of specials: " + fetchedSpecials.size());
             }
-
             return fetchedSpecials;
         }
 
         @Override
-        protected void onPostExecute(List<Specials> special)
-        {
-            if(specials != null)
-            {
+        protected void onPostExecute(List<Specials> special) {
+            if (special != null && !special.isEmpty()) {
                 specials.addAll(special);
                 rc1.setAdapter(adapter1);
                 adapter1.notifyDataSetChanged();
+            } else {
+                // If there are no specials, hide the RecyclerView and set a message
+                rc1.setVisibility(View.GONE);
+                // Example: someTextView.setText("No specials available.");
             }
         }
-
     }
-    private class getBusinessDataQueryAsyncTask extends  AsyncTask<Integer, Void, List<Business>> {
+
+    private class getBusinessDataQueryAsyncTask extends AsyncTask<Integer, Void, List<Business>> {
 
         @Override
         protected List<Business> doInBackground(Integer... integers) {
@@ -213,14 +205,10 @@ public class BusinessHomePage extends AppCompatActivity {
                     String password = resultSet.getString("Password");
                     String businessName = resultSet.getString("BusinessName");
                     String contactNumber = resultSet.getString("ContactNumber");
-
                     int capacity = resultSet.getInt("CapacityLimit");
                     String busType = resultSet.getString("BusType");
                     String location = resultSet.getString("Location");
                     byte[] imageData1 = resultSet.getBytes("Image1");
-
-
-
 
                     if (imageData1 != null && imageData1.length > 0) {
                         Bitmap bitmap1 = BitmapFactory.decodeByteArray(imageData1, 0, imageData1.length);
@@ -228,40 +216,31 @@ public class BusinessHomePage extends AppCompatActivity {
                         business.setImage1(bitmap1);
                         fetchedBusinesses.add(business);
                     } else {
-                        Business business = new Business(businessID, email, businessName, contactNumber, password,  capacity, busType, location);
+                        Business business = new Business(businessID, email, businessName, contactNumber, password, capacity, busType, location);
                         fetchedBusinesses.add(business);
                     }
                 }
-
                 resultSet.close();
                 preparedStatement.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return fetchedBusinesses;
         }
 
         @Override
-        protected void onPostExecute(List<Business> business)
-        {
-            if (business!=null)
-            {
-
+        protected void onPostExecute(List<Business> business) {
+            if (business != null && !business.isEmpty()) {
                 txtBusinessName.setText(business.get(0).getName());
                 txtLocation.setText(business.get(0).getLocation());
-                if (business.get(0).getImage1() != null ) {
+                if (business.get(0).getImage1() != null) {
                     imgDisplayPic2.setImageBitmap(business.get(0).getImage1());
                 } else {
                     imgDisplayPic2.setImageResource(R.drawable.img);
                 }
             }
         }
-
     }
-
-
-
 
     private void makeNice() {
         Window window = getWindow();
@@ -280,6 +259,7 @@ public class BusinessHomePage extends AppCompatActivity {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
+
     private class EventQueryTask extends AsyncTask<Integer, Void, List<Event>> {
         @Override
         protected List<Event> doInBackground(Integer... Integer) {
@@ -328,12 +308,15 @@ public class BusinessHomePage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Event> eventData) {
-            if (eventData != null) {
+            if (eventData != null && !eventData.isEmpty()) {
                 events.addAll(eventData);
                 adapter2.notifyDataSetChanged();
                 rc2.setAdapter(adapter2);
+            } else {
+                // If there are no events, hide the RecyclerView and set a message
+                rc2.setVisibility(View.GONE);
+                // Example: someTextView.setText("No events available.");
             }
         }
     }
-
 }
