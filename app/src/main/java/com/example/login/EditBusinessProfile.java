@@ -399,6 +399,9 @@ public class EditBusinessProfile extends AppCompatActivity {
             if (success) {
                 Toast.makeText(EditBusinessProfile.this, "Account Updated!", Toast.LENGTH_SHORT).show();
                 setdata();
+                Intent intent= new Intent(EditBusinessProfile.this,BusinessHomePage.class);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(EditBusinessProfile.this, "Error updating account.", Toast.LENGTH_SHORT).show();
             }
