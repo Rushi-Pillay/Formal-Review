@@ -13,7 +13,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_button"
         android:onClick="btndeletespecial"
-        android:text="Update/Add"
+        android:text="Delete Special"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.091"

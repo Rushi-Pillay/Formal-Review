@@ -50,6 +50,7 @@ public class EditBusinessProfile extends AppCompatActivity {
     RushenBusinessImageAdapter.BusinessViewHolder cvh;
     RushenBusinessImageAdapter.BusinessViewHolder lastClickedViewHolder = null;
     String name ;
+    boolean isdone =false;
     RecyclerView rc1;
     String location ;
     List<Specials> specials;
@@ -269,18 +270,15 @@ public class EditBusinessProfile extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
     public void updatedetails(View view) throws SQLException {
         name = edtName.getText().toString();
         location = edtLocation.getText().toString();
         email = edtEmail.getText().toString();
         contactNum = edtContact.getText().toString();
         new InsertDataTask().execute(name,location,email,contactNum);
+    }
+    public void thiswillrecreate(){
+        this.recreate();
     }
 
 
@@ -291,7 +289,6 @@ public class EditBusinessProfile extends AppCompatActivity {
     public void oncliskcaddphotos(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, REQUEST_CODE_GALLERY);
-
     }
 
     @Override
@@ -346,8 +343,7 @@ public class EditBusinessProfile extends AppCompatActivity {
         protected void onPostExecute(Boolean isSuccess) {
             if (isSuccess) {
                 Toast.makeText(EditBusinessProfile.this, "image added successfully", Toast.LENGTH_SHORT).show();
-                setuprecyclers();
-                new RetrieveBusinessTask().execute();
+                thiswillrecreate();
             } else {
                 Toast.makeText(EditBusinessProfile.this, "Failed to add image", Toast.LENGTH_SHORT).show();
             }

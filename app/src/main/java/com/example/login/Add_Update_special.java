@@ -118,6 +118,8 @@ TextView edtName,edtDescrip;
 
     public void btndeletespecial(View view) {
         new DeleteSpecial().execute(SpecialID);
+        Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
+        startActivity(intent);
     }
     private class DeleteSpecial extends AsyncTask<Integer, Void, Boolean> {
         @Override
