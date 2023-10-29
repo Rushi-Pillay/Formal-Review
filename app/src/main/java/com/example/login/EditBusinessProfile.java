@@ -95,10 +95,11 @@ public class EditBusinessProfile extends AppCompatActivity {
             try {
                 SpecialAdapter.SpecialViewHolder viewHolder = (SpecialAdapter.SpecialViewHolder) rcspecial.findContainingViewHolder(specials);
                 if (viewHolder != null && viewHolder.specials != null) {
-                    SharedPreferences sharedPref4 = getSharedPreferences("Myprefs4", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor3 = sharedPref4.edit();
-                    editor3.putInt("SpecialID", viewHolder.specials.getSpecID());
-                    editor3.apply();
+                    SharedPreferences rushensharedpref1 = getSharedPreferences("Specials", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor2 = rushensharedpref1.edit();
+                    editor2.putInt("SpecialID", viewHolder.specials.specID);
+                    editor2.apply();
+
                     Intent intent = new Intent(EditBusinessProfile.this, Add_Update_special.class);
                     startActivity(intent);
                 } else {
@@ -172,10 +173,10 @@ public class EditBusinessProfile extends AppCompatActivity {
     }
 
     public void AddSpecial(View view) {
-        SharedPreferences sharedPref4 = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor3 = sharedPref4.edit();
-        editor3.putInt("SpecialID", -1);
-        editor3.apply();
+        SharedPreferences rushensharedpref1 = getSharedPreferences("Specials", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = rushensharedpref1.edit();
+        editor2.putInt("SpecialID", -1);
+        editor2.apply();
         Intent intent = new Intent(EditBusinessProfile.this, Add_Update_special.class);
         startActivity(intent);
     }

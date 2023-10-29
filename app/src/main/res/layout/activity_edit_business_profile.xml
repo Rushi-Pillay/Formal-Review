@@ -21,7 +21,7 @@
         android:layout_width="124dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/rounded_button"
         android:onClick="AddSpecial"
         android:text="Add Special"
@@ -189,11 +189,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ERVSpecials"
-        android:layout_width="387dp"
-        android:layout_height="204dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_width="402dp"
+        android:layout_height="189dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recylerineditbus" />
+        app:layout_constraintTop_toBottomOf="@+id/BTNAddSpecial" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

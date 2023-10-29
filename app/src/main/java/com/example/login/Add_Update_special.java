@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -32,6 +33,7 @@ TextView edtName,edtDescrip;
     int blueColorValue;
     int newImageVal;
     int busID;
+    Button Deletentn;
     Button update_add;
 
     @SuppressLint("MissingInflatedId")
@@ -42,20 +44,25 @@ TextView edtName,edtDescrip;
         setContentView(R.layout.activity_add_update_special);
         SharedPreferences sharedPref2 = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
         busID = sharedPref2.getInt("businessID", -1);
-        SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
+        Toast.makeText(Add_Update_special.this, busID+" ", Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPref3 = getSharedPreferences("Specials", Context.MODE_PRIVATE);
         SpecialID = sharedPref3.getInt("SpecialID", -1);
+        Toast.makeText(Add_Update_special.this, SpecialID+" ", Toast.LENGTH_SHORT).show();
         edtName = findViewById(R.id.SEDTName);
         edtDescrip = findViewById(R.id.SEDTDescription);
         BTNBaloons=findViewById(R.id.imageButton3);
         BTNBeer=findViewById(R.id.imageButton4);
         BTNCocktail=findViewById(R.id.imageButton5);
         update_add = findViewById(R.id.BTNConfirmSpecials);
+        Deletentn = findViewById(R.id.BTNdelete);
         Heading = findViewById(R.id.SEDTHEeading);
         if (SpecialID != -1){
             Heading.setText("Update Special");
             update_add.setText("Confirm Changes");
+            Deletentn.setVisibility(View.VISIBLE);
             new RetrieveSpecialTask().execute();
         }else{
+            Deletentn.setVisibility(View.INVISIBLE);
             Heading.setText("Add Special");
             update_add.setText("Add Special");
         }
@@ -65,14 +72,14 @@ TextView edtName,edtDescrip;
         BTNBaloons.setBackgroundColor(blueColorValue);
         BTNCocktail.setBackgroundColor(0);
         BTNBeer.setBackgroundColor(0);
-        newImageVal=2;
+        newImageVal=3;
     }
 
     public void BeerOnclick(View view) {
         BTNBeer.setBackgroundColor(blueColorValue);
         BTNCocktail.setBackgroundColor(0);
         BTNBaloons.setBackgroundColor(0);
-        newImageVal=3;
+        newImageVal=2;
     }
 
     public void CocktailOnclick(View view) {
@@ -84,11 +91,67 @@ TextView edtName,edtDescrip;
 
     public void Update_AddSpecial(View view) {
         if (SpecialID == -1){
-            new InsertDataTask().execute(sname,sdescrip);
+
+            sname = edtName.getText().toString();
+            sdescrip = (String) edtDescrip.getText().toString();
+            if (sname==""){
+                Toast.makeText(Add_Update_special.this, "There is no special name, please add a special name", Toast.LENGTH_SHORT).show();
+            }else if (sdescrip==""){
+                Toast.makeText(Add_Update_special.this, "There is no special Description, please add a description ", Toast.LENGTH_SHORT).show();
+            }else {
+                new InsertDataTask().execute(sname,sdescrip);
+                Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
+                startActivity(intent);
+            }
         }else{
-            new UpdateDataTask().execute(sname,sdescrip);
+            sname = edtName.getText().toString();
+            sdescrip = (String) edtDescrip.getText().toString();
+            if (sname==""){
+                Toast.makeText(Add_Update_special.this, "There is no special name", Toast.LENGTH_SHORT).show();
+            }else if (sdescrip==""){
+                Toast.makeText(Add_Update_special.this, "There is no special Description", Toast.LENGTH_SHORT).show();
+            }else {
+                new UpdateDataTask().execute(sname, sdescrip);
+            }
         }
     }
+
+    public void btndeletespecial(View view) {
+        new DeleteSpecial().execute(SpecialID);
+    }
+    private class DeleteSpecial extends AsyncTask<Integer, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            Connection dbconnect = com.example.login.DatabaseConnection.getInstance().getConnection();
+            int name = params[0];
+
+            String sql = "DELETE FROM specials WHERE specID = ?;";
+
+            try {
+                PreparedStatement preparedStatement = dbconnect.prepareStatement(sql);
+                preparedStatement.setInt(1, name);
+
+                preparedStatement.executeUpdate();
+
+                preparedStatement.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Toast.makeText(Add_Update_special.this, "Special deleted!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Add_Update_special.this, "Error deleting Special.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private class UpdateDataTask extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
@@ -206,4 +269,5 @@ TextView edtName,edtDescrip;
             edtName.setText(sname);
         }
     }
+
 }

@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".Add_Update_special">
 
+    <Button
+        android:id="@+id/BTNdelete"
+        android:layout_width="109dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
+        android:onClick="btndeletespecial"
+        android:text="Update/Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="OnClick" />
+
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
@@ -73,12 +87,13 @@
         android:id="@+id/BTNConfirmSpecials"
         android:layout_width="109dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="28dp"
-        android:background="#000000"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
         android:onClick="Update_AddSpecial"
         android:text="Update/Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.905"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="OnClick" />
 
