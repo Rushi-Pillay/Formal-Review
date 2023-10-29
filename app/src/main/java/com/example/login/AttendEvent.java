@@ -147,8 +147,10 @@ public class AttendEvent extends AppCompatActivity {
             isAttending = attending;
             if (attending) {
                 attend.setText("Unattend the event");
+                attend.setBackgroundColor(Color.parseColor("#FF4D4D"));
             } else {
-                attend.setText("Click if you are going to attend");
+                attend.setText("Are you going to attend the event?");
+                attend.setBackgroundColor(Color.parseColor("#1DB954"));
             }
         }
     }
@@ -191,8 +193,10 @@ public class AttendEvent extends AppCompatActivity {
                 isAttending = !isAttending;
                 if (isAttending) {
                     attend.setText("Unattend the event");
+                    attend.setBackgroundColor(Color.parseColor("#FF4D4D"));
                 } else {
                     attend.setText("Are you going to attend the event?");
+                    attend.setBackgroundColor(Color.parseColor("#1DB954"));
                 }
             } else {
                 Toast.makeText(AttendEvent.this, "Operation failed", Toast.LENGTH_SHORT).show();
