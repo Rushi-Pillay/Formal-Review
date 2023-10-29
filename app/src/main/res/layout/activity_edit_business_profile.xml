@@ -21,8 +21,8 @@
         android:layout_width="124dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/black"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rounded_button"
         android:onClick="AddSpecial"
         android:text="Add Special"
         android:textColor="@color/white"
@@ -113,16 +113,17 @@
         android:id="@+id/btneditaddPhotos"
         android:layout_width="165dp"
         android:layout_height="57dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:background="@color/black"
+        android:background="@drawable/rounded_button"
         android:onClick="oncliskcaddphotos"
         android:text="Add Photos"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/recylerineditbus"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtContactNumber"
         app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtheadingUpdatebusinessaccount"
@@ -144,14 +145,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginBottom="4dp"
-        android:background="@color/black"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_button"
         android:onClick="updatedetails"
         android:text="Update Details"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -178,8 +179,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recylerineditbus"
-        android:layout_width="386dp"
-        android:layout_height="115dp"
+        android:layout_width="389dp"
+        android:layout_height="149dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="68dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -189,9 +190,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ERVSpecials"
         android:layout_width="387dp"
-        android:layout_height="161dp"
+        android:layout_height="204dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recylerineditbus" />
 
