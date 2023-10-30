@@ -56,6 +56,9 @@ TextView edtName,edtDescrip;
         Deletentn = findViewById(R.id.BTNdelete);
         Heading = findViewById(R.id.SEDTHEeading);
         if (SpecialID != -1){
+            BTNCocktail.setBackgroundColor(0);
+            BTNBaloons.setBackgroundColor(0);
+            BTNBeer.setBackgroundColor(0);
             Heading.setText("Update Special");
             update_add.setText("Confirm Changes");
             Deletentn.setVisibility(View.VISIBLE);
@@ -103,8 +106,7 @@ TextView edtName,edtDescrip;
                 Toast.makeText(Add_Update_special.this, "There is no Image selected please select an image ", Toast.LENGTH_SHORT).show();
             } else {
                 new InsertDataTask().execute(sname,sdescrip);
-                Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
-                startActivity(intent);
+
             }
         }else{
             sname = edtName.getText().toString();
@@ -184,6 +186,8 @@ TextView edtName,edtDescrip;
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(Add_Update_special.this, "Special Updated!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
+                startActivity(intent);
             } else {
                 Toast.makeText(Add_Update_special.this, "Error updating special, try again later", Toast.LENGTH_SHORT).show();
             }
@@ -215,9 +219,11 @@ TextView edtName,edtDescrip;
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
-                Toast.makeText(Add_Update_special.this, "Record Inserted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_Update_special.this, "Special Added!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
+                startActivity(intent);
             } else {
-                Toast.makeText(Add_Update_special.this, "Error inserting record.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_Update_special.this, "Error, Description too long", Toast.LENGTH_SHORT).show();
             }
         }
     }
