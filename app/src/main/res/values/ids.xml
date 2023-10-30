@@ -8,4 +8,5 @@
     <item name="btneditaddPhotos" type="id" />
     <item name="btnUpdateBusinessaccount" type="id" />
     <item name="recylerineditbus" type="id" />
+    <item name="showPasswordCheckBox" type="id" />
 </resources>

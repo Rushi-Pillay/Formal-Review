@@ -1,5 +1,6 @@
 package com.example.login;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.view.View;
@@ -29,6 +30,7 @@ public class CreatePersonalAccount extends AppCompatActivity {
     boolean found =false;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
