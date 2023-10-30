@@ -55,6 +55,8 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         makeNice();
         setuprecyclers();
         new RetrieveImageTask().execute(userID);
+        rc1.addItemDecoration(new SpaceItemDecoration(15));
+        rc2.addItemDecoration(new SpaceItemDecoration(15));
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
         search = findViewById(R.id.edttxtSearch);
@@ -138,17 +140,18 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         adapter2 = new RushenEventAdaper(events);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         userID = sharedPref.getInt("user_id", -1);
+
         rc1 = findViewById(R.id.RBrowseEventsBusiness_BusinessRecycler);
+        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rc1.setLayoutManager(layoutManager);
         rc1.setAdapter(adapter);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
         rc2.setLayoutManager(layoutManager2);
         rc2.setAdapter(adapter2);
-        rc1.addItemDecoration(new SpaceItemDecoration(15));
-        rc2.addItemDecoration(new SpaceItemDecoration(15));
+
         imageView = findViewById(R.id.imageView2);
+        makeNice();
     }
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -160,13 +163,10 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
 
     public void doSearch() {
 
-        business.clear();
-        events.clear();
         search = findViewById(R.id.edttxtSearch);
         searchterm = search.getText().toString();
         new RetrieveSearchedBusinessTask().execute();
         new RetrieveSearchEventTask().execute();
-
     }
 
     private class RetrieveImageTask extends AsyncTask<Integer, Void, Bitmap> {
@@ -272,7 +272,6 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Business> fetchedBusinesses) {
             if (fetchedBusinesses != null && !fetchedBusinesses.isEmpty()) {
-
                 business.addAll(fetchedBusinesses);
                 adapter.notifyDataSetChanged();
             }
@@ -336,9 +335,10 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Business> fetchedBusinesses) {
             if (fetchedBusinesses != null && !fetchedBusinesses.isEmpty()) {
-
+                business = new ArrayList<>();
+                setuprecyclers();
                 business.addAll(fetchedBusinesses);
-                adapter.notifyDataSetChanged();
+
             }
         }
     }
