@@ -51,6 +51,7 @@ TextView edtName,edtDescrip;
         BTNBaloons=findViewById(R.id.imageButton3);
         BTNBeer=findViewById(R.id.imageButton4);
         BTNCocktail=findViewById(R.id.imageButton5);
+
         update_add = findViewById(R.id.BTNConfirmSpecials);
         Deletentn = findViewById(R.id.BTNdelete);
         Heading = findViewById(R.id.SEDTHEeading);
@@ -61,6 +62,9 @@ TextView edtName,edtDescrip;
             new RetrieveSpecialTask().execute();
         }else{
             Deletentn.setVisibility(View.INVISIBLE);
+            BTNCocktail.setBackgroundColor(0);
+            BTNBaloons.setBackgroundColor(0);
+            BTNBeer.setBackgroundColor(0);
             Heading.setText("Add Special");
             update_add.setText("Add Special");
         }
@@ -89,14 +93,15 @@ TextView edtName,edtDescrip;
 
     public void Update_AddSpecial(View view) {
         if (SpecialID == -1){
-
             sname = edtName.getText().toString();
             sdescrip = (String) edtDescrip.getText().toString();
-            if (sname==""){
+            if (sname.equals("")){
                 Toast.makeText(Add_Update_special.this, "There is no special name, please add a special name", Toast.LENGTH_SHORT).show();
-            }else if (sdescrip==""){
+            }else if (sdescrip.equals("")){
                 Toast.makeText(Add_Update_special.this, "There is no special Description, please add a description ", Toast.LENGTH_SHORT).show();
-            }else {
+            }else if (newImageVal == 0){
+                Toast.makeText(Add_Update_special.this, "There is no Image selected please select an image ", Toast.LENGTH_SHORT).show();
+            } else {
                 new InsertDataTask().execute(sname,sdescrip);
                 Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
                 startActivity(intent);
@@ -240,13 +245,13 @@ TextView edtName,edtDescrip;
                             BTNBaloons.setBackgroundColor(0);
                             BTNBeer.setBackgroundColor(0);
                         }
-                        if (imgid==2){
+                        if (imgid==3){
                             // is balloons
                             BTNBaloons.setBackgroundColor(blueColorValue);
                             BTNCocktail.setBackgroundColor(0);
                             BTNBeer.setBackgroundColor(0);
                         }
-                        if (imgid==3){
+                        if (imgid==2){
                             // Beer
                             BTNBeer.setBackgroundColor(blueColorValue);
                             BTNCocktail.setBackgroundColor(0);
