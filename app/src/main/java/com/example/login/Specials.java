@@ -1,7 +1,7 @@
 package com.example.login;
 
 public class Specials {
-    private int specID;
+    public int specID;
     private String specName;
     private String specDesc;
     private int specIMG;

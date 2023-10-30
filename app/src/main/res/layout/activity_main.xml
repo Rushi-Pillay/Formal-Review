@@ -14,19 +14,20 @@
         android:id="@+id/btnPersonal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="18dp"
         android:text="Personal Sign Up"
         android:textColor="@android:color/holo_blue_bright"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnBusiness"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnBusiness" />
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toEndOf="@+id/btnBusiness"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="146dp"
-        android:layout_height="0dp"
+        android:layout_width="152dp"
+        android:layout_height="144dp"
         android:layout_marginTop="64dp"
-        app:layout_constraintBottom_toTopOf="@+id/usernameTextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,8 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="38dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/black"
         android:elevation="30dp"
@@ -47,26 +48,26 @@
         android:onClick="LoginClicked"
         android:text="Login"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="17dp"
         android:hint="Email Address"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusTopStart="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/passwordTextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
@@ -87,8 +88,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="27dp"
         android:hint="Password"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="12dp"
@@ -97,8 +98,8 @@
         app:boxCornerRadiusTopStart="12dp"
         app:endIconMode="password_toggle"
         app:hintTextColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usernameTextInputLayout">
 
@@ -115,40 +116,24 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="29dp"
-        android:elevation="10dp"
-        android:text="Forgotten password?"
-        android:textColor="@android:color/holo_blue_bright"
-        app:layout_constraintBottom_toTopOf="@+id/BtnLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout" />
-
-    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="32dp"
         android:text="Dont have an account ?"
-        app:layout_constraintBottom_toTopOf="@+id/btnBusiness"
-        app:layout_constraintEnd_toStartOf="@+id/btnPersonal"
-        app:layout_constraintStart_toStartOf="@+id/btnPersonal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnLogin" />
 
     <TextView
         android:id="@+id/btnBusiness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="196dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="28dp"
         android:elevation="10dp"
         android:text="Business Sign Up"
         android:textColor="@android:color/holo_blue_bright"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnPersonal"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />

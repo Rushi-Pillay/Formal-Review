@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -29,6 +30,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     EditText usernameEditText;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         connectToDB();
-
+        new DeletePastEventsTask().execute();
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.edtPass);
         loginButton = findViewById(R.id.BtnLogin);
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this,CreatePersonalAccount.class);
             startActivity(intent);
         });
+
 
     }
     private class ConnectToDBTask extends AsyncTask<Void, Void, String> {
@@ -107,6 +110,47 @@ public class MainActivity extends AppCompatActivity {
         new IsBusinessTask().execute(email, password);
 
 
+
+    }
+    private class DeletePastEventsTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Get the current date in yyyy-MM-dd format
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String currentDate = dateFormat.format(new Date());
+
+            try {
+                // Create a temporary table to store the EventIDs of past events
+                String createTempTableQuery = "CREATE TEMPORARY TABLE IF NOT EXISTS TempEventIDs (EventID INT)";
+                PreparedStatement createTempTableStatement = connection.prepareStatement(createTempTableQuery);
+                createTempTableStatement.executeUpdate();
+
+                // Insert the EventIDs of past events into the temporary table
+                String insertTempTableQuery = "INSERT INTO TempEventIDs (EventID) SELECT EventID FROM events WHERE EventDate < ? AND Recurring = 0";
+                PreparedStatement insertTempTableStatement = connection.prepareStatement(insertTempTableQuery);
+                insertTempTableStatement.setString(1, currentDate);
+                insertTempTableStatement.executeUpdate();
+
+                // For each table, execute a DELETE statement using a JOIN with the temporary table
+                String[] tables = {"eventattendees", "eventrating", "businessevents", "events"};
+                for (String table : tables) {
+                    String deleteQuery = "DELETE " + table + " FROM " + table + " JOIN TempEventIDs ON " + table + ".EventID = TempEventIDs.EventID";
+                    PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
+                    int rowsAffected = deleteStatement.executeUpdate();
+                    deleteStatement.close();
+                    System.out.println("Deleted " + rowsAffected + " rows from table " + table);
+                }
+
+                // Drop the temporary table
+                String dropTempTableQuery = "DROP TEMPORARY TABLE IF EXISTS TempEventIDs";
+                PreparedStatement dropTempTableStatement = connection.prepareStatement(dropTempTableQuery);
+                dropTempTableStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
     private class IsBusinessTask extends AsyncTask<String, Void, Boolean> {
         public String email ;

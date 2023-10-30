@@ -27,9 +27,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapter
         public void setImage(BusinessImage images) {
             this.images = images;
             img1.setImageBitmap(images.getImage());
-
-
-
         }
 
 

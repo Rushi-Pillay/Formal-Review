@@ -43,6 +43,7 @@ public class MainPage extends AppCompatActivity {
     private List<Business> business;
     private List<Event> events;
     private ImageView imgUser;
+    private int countforthepopupmsg=0;
     List<EventInfo> eventListg = new ArrayList<>();
     int userID ;
     private RateAppDialog rateAppDialog ;
@@ -77,7 +78,11 @@ public class MainPage extends AppCompatActivity {
         new RetrieveImageTask().execute(userID);
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
-        new RetrieveAttendedEventsTask().execute();
+        if (countforthepopupmsg == 0){
+            new RetrieveAttendedEventsTask().execute();
+            countforthepopupmsg++;
+        }
+
 
 
 

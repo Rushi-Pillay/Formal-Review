@@ -48,7 +48,9 @@ public class EditBusinessProfile extends AppCompatActivity {
     SpecialAdapter adapter1;
     ImageView Businessdisplayimage;
     RushenBusinessImageAdapter.BusinessViewHolder cvh;
+    RushenBusinessImageAdapter.BusinessViewHolder lastClickedViewHolder = null;
     String name ;
+    boolean isdone =false;
     RecyclerView rc1;
     String location ;
     List<Specials> specials;
@@ -94,10 +96,11 @@ public class EditBusinessProfile extends AppCompatActivity {
             try {
                 SpecialAdapter.SpecialViewHolder viewHolder = (SpecialAdapter.SpecialViewHolder) rcspecial.findContainingViewHolder(specials);
                 if (viewHolder != null && viewHolder.specials != null) {
-                    SharedPreferences sharedPref4 = getSharedPreferences("Myprefs4", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor3 = sharedPref4.edit();
-                    editor3.putInt("SpecialID", viewHolder.specials.getSpecID());
-                    editor3.apply();
+                    SharedPreferences rushensharedpref1 = getSharedPreferences("Specials", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor2 = rushensharedpref1.edit();
+                    editor2.putInt("SpecialID", viewHolder.specials.specID);
+                    editor2.apply();
+
                     Intent intent = new Intent(EditBusinessProfile.this, Add_Update_special.class);
                     startActivity(intent);
                 } else {
@@ -111,20 +114,17 @@ public class EditBusinessProfile extends AppCompatActivity {
         });
 
         adapter.setOnClickListener(business -> {
-            count++;
             cvh = (RushenBusinessImageAdapter.BusinessViewHolder) rc1.findContainingViewHolder(business);
-            if (count%2!=1){cvh.btndelete.setVisibility(View.INVISIBLE);}
-            if (count%2==1){
+                if (lastClickedViewHolder != null) {lastClickedViewHolder.btndelete.setVisibility(View.INVISIBLE);}
                 cvh.btndelete.setVisibility(View.VISIBLE);
                 if (cvh != null && cvh.business != null) {
                     cvh.btndelete.setOnClickListener(v1 -> {
                         delteid = cvh.business.imageID;
                         new Deleteimage().execute(delteid);
+                        this.recreate();
                     });
                 }
-            }
-
-
+            lastClickedViewHolder = cvh;
         });
 
     }
@@ -155,7 +155,6 @@ public class EditBusinessProfile extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(EditBusinessProfile.this, "Image deleted!", Toast.LENGTH_SHORT).show();
-
             } else {
                 Toast.makeText(EditBusinessProfile.this, "Error deleting image.", Toast.LENGTH_SHORT).show();
             }
@@ -164,7 +163,6 @@ public class EditBusinessProfile extends AppCompatActivity {
 
 
     public void setuprecyclers(){
-        count =0;
         busimages = new ArrayList<>();
         adapter = new RushenBusinessImageAdapter(busimages);
         rc1 = findViewById(R.id.recylerineditbus);
@@ -176,10 +174,10 @@ public class EditBusinessProfile extends AppCompatActivity {
     }
 
     public void AddSpecial(View view) {
-        SharedPreferences sharedPref4 = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor3 = sharedPref4.edit();
-        editor3.putInt("SpecialID", -1);
-        editor3.apply();
+        SharedPreferences rushensharedpref1 = getSharedPreferences("Specials", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = rushensharedpref1.edit();
+        editor2.putInt("SpecialID", -1);
+        editor2.apply();
         Intent intent = new Intent(EditBusinessProfile.this, Add_Update_special.class);
         startActivity(intent);
     }
@@ -272,18 +270,15 @@ public class EditBusinessProfile extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
     public void updatedetails(View view) throws SQLException {
         name = edtName.getText().toString();
         location = edtLocation.getText().toString();
         email = edtEmail.getText().toString();
         contactNum = edtContact.getText().toString();
         new InsertDataTask().execute(name,location,email,contactNum);
+    }
+    public void thiswillrecreate(){
+        this.recreate();
     }
 
 
@@ -294,7 +289,6 @@ public class EditBusinessProfile extends AppCompatActivity {
     public void oncliskcaddphotos(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, REQUEST_CODE_GALLERY);
-
     }
 
     @Override
@@ -349,8 +343,7 @@ public class EditBusinessProfile extends AppCompatActivity {
         protected void onPostExecute(Boolean isSuccess) {
             if (isSuccess) {
                 Toast.makeText(EditBusinessProfile.this, "image added successfully", Toast.LENGTH_SHORT).show();
-                setuprecyclers();
-                new RetrieveBusinessTask().execute();
+                thiswillrecreate();
             } else {
                 Toast.makeText(EditBusinessProfile.this, "Failed to add image", Toast.LENGTH_SHORT).show();
             }
