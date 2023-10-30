@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,13 +56,18 @@ public class EventAdd extends AppCompatActivity {
     boolean timeset = false;
     boolean capacityset = false;
     boolean reoccurset = false;
+    int latest;
+    int businessID;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_add);
 
-
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+         businessID = sharedPref.getInt("businessID", -1);
         Name = findViewById(R.id.editTextTextPersonName2);
         Description = findViewById(R.id.DescriptionText);
         TimeButton = findViewById(R.id.time2);
@@ -151,7 +158,7 @@ public class EventAdd extends AppCompatActivity {
 
     private void insertEventToDatabase() {
 
-        if(dateset ==true && timeset  == true && nameset ==true && descset ==true && capacityset == true && locationset == true){
+
             String eventName = Name.getText().toString().trim();
             String description = Description.getText().toString().trim();
             String eventDate = dateButton.getText().toString().trim();
@@ -180,12 +187,12 @@ public class EventAdd extends AppCompatActivity {
             else{
                 new InsertEventTask3().execute(eventName, description, eventDate, eventTime, eventVenue, tempage,reoccurence+"",capacityLimit, image1, image2, image3);
             }
-        }
-        else {
-        Toast temp = new Toast(this);
-        temp.setText("enter all info");
-        temp.show();
-        }
+
+            //latest = getLatestEventID();
+
+            new InsertEventbussTask().execute(1,businessID);
+
+
 
 
 
@@ -280,7 +287,7 @@ public class EventAdd extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
-                finish();
+
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
             }
@@ -312,7 +319,7 @@ public class EventAdd extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
-                finish();
+
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
             }
@@ -345,7 +352,7 @@ public class EventAdd extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
-                finish();
+
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
             }
@@ -380,12 +387,57 @@ public class EventAdd extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private int getLatestEventID() {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        String query = "SELECT MAX(eventID) FROM events"; // For MySQL. If using another DB, adjust this query accordingly.
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    private class InsertEventbussTask extends AsyncTask<Object, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            String query = "INSERT INTO businessevents (EventID, BusinessID) VALUES (?, ?)";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, (Integer) params[0]);
+                preparedStatement.setInt(2, (Integer) params[1]);
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+
+
+
 
 
 
