@@ -47,9 +47,6 @@ public class EventAdd extends AppCompatActivity {
     private ArrayList<Uri> mArrayUri = new ArrayList<>();
     private int position = 0;
     private int reoccurence = 0;
-    private ImageView tempimage;
-    private Image temp12;
-
     boolean nameset = false;
     boolean dateset = false;
     boolean descset = false;
@@ -57,10 +54,7 @@ public class EventAdd extends AppCompatActivity {
     boolean timeset = false;
     boolean capacityset = false;
     boolean reoccurset = false;
-    boolean photoset1 = false;
-    boolean photoset2 = false;
-    boolean photoset3 = false;
-    private Blob im1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +76,6 @@ public class EventAdd extends AppCompatActivity {
         dateButton = findViewById(R.id.button10);
         Next = findViewById(R.id.button9);
         venue = findViewById(R.id.EditTextLoaction);
-
-
         initDatePicker();
         dateButton.setOnClickListener(event -> datePickerDialog.show());
         venue.setOnClickListener(v->{
@@ -96,7 +88,6 @@ public class EventAdd extends AppCompatActivity {
             nameset = true;
         });
         Capacity.setOnClickListener(v->{
-
             capacityset = true;
         });
 
@@ -160,60 +151,62 @@ public class EventAdd extends AppCompatActivity {
 
     private void insertEventToDatabase() {
 
+        if(dateset ==true && timeset  == true && nameset ==true && descset ==true && capacityset == true && locationset == true){
+            String eventName = Name.getText().toString().trim();
+            String description = Description.getText().toString().trim();
+            String eventDate = dateButton.getText().toString().trim();
+            String eventTime = TimeButton.getText().toString().trim();
+            boolean isAgeRestricted = AgeRestrict.isChecked();
+            int capacityLimit = Integer.parseInt(Capacity.getText().toString().trim());
+            String eventVenue = venue.getText().toString().trim();
+            int tempage =0;
+            if(isAgeRestricted ==true){
+                tempage = 1;
+            }
+            byte[] image1 = null, image2 = null, image3 = null;
+            if (mArrayUri.size() > 0) image1 = uriToByteArray(mArrayUri.get(0), this);
+            if (mArrayUri.size() > 1) image2 = uriToByteArray(mArrayUri.get(1), this);
+            if (mArrayUri.size() > 2) image3 = uriToByteArray(mArrayUri.get(2), this);
 
-
-        String eventName = Name.getText().toString().trim();
-        String description = Description.getText().toString().trim();
-        String eventDate = dateButton.getText().toString().trim();
-        String eventTime = TimeButton.getText().toString().trim();
-        boolean isAgeRestricted = AgeRestrict.isChecked();
-        int capacityLimit = Integer.parseInt(Capacity.getText().toString().trim());
-        String eventVenue = venue.getText().toString().trim();
-
-
-
-
-
-        byte[] image1 = null, image2 = null, image3 = null;
-        if (mArrayUri.size() > 0) image1 = uriToByteArray(mArrayUri.get(0), this);
-        if (mArrayUri.size() > 1) image2 = uriToByteArray(mArrayUri.get(1), this);
-        if (mArrayUri.size() > 2) image3 = uriToByteArray(mArrayUri.get(2), this);
-
-
-
-        new InsertEventTask3().execute(eventName, description, eventDate, eventTime, eventVenue, isAgeRestricted, capacityLimit,reoccurence+"", image1, image2, image3);
-
-
-
-
+            if (mArrayUri.size() == 0){
+                new InsertEventTask0().execute(eventName, description, eventDate, eventTime, eventVenue, tempage,reoccurence+"",capacityLimit);
+            }
+            else if(mArrayUri.size() == 1){
+                new InsertEventTask1().execute(eventName, description, eventDate, eventTime, eventVenue, tempage,reoccurence+"",capacityLimit,image1);
+            }
+            else if(mArrayUri.size() == 2){
+                new InsertEventTask2().execute(eventName, description, eventDate, eventTime, eventVenue, tempage,reoccurence+"",capacityLimit,image1,image2);
+            }
+            else{
+                new InsertEventTask3().execute(eventName, description, eventDate, eventTime, eventVenue, tempage,reoccurence+"",capacityLimit, image1, image2, image3);
+            }
+        }
+        else {
+        Toast temp = new Toast(this);
+        temp.setText("enter all info");
+        temp.show();
+        }
 
 
 
     }
     private byte[] uriToByteArray(Uri uri, Context context) {
         try {
-            // Convert Uri to InputStream
             InputStream inputStream = context.getContentResolver().openInputStream(uri);
-
-            // Convert InputStream to Bitmap
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
-            // Convert Bitmap to byte[]
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);  // You can use JPEG or WEBP as well
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             return outputStream.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
     private byte[] convertBitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -230,19 +223,16 @@ public class EventAdd extends AppCompatActivity {
             }
         }
     }
-
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
             month = month + 1;
             String date = day + "/" + month + "/" + year;
             dateButton.setText(date);
         };
-
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-
         datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, dateSetListener, year, month, day);
         dateset = true;
     }
@@ -252,11 +242,9 @@ public class EventAdd extends AppCompatActivity {
             String time = hourOfDay + ":" + minute;
             TimeButton.setText(time);
         };
-
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-
         timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, timeSetListener, hour, minute, true);
         timeset = true;
     }
@@ -264,22 +252,23 @@ public class EventAdd extends AppCompatActivity {
     private class InsertEventTask3 extends AsyncTask<Object, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Object... params) {
-            try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
-                String query = "INSERT INTO events (EventName, Description, Date, Time, Venue, AgeRestrict,Recurring, Capacity, Image1, Image2, Image3) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+                String query = "INSERT INTO events (EventName, Description, EventDate, EventTime, Venue, AgeRestriction,Recurring, CapacityLimit, Image1, Image2, Image3) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setString(1, (String) params[0]);
                     preparedStatement.setString(2, (String) params[1]);
                     preparedStatement.setString(3, (String) params[2]);
                     preparedStatement.setString(4, (String) params[3]);
                     preparedStatement.setString(5, (String) params[4]);
-                    preparedStatement.setBoolean(6, (Boolean) params[5]);
+                    preparedStatement.setInt(6, (Integer) params[5]);
                     preparedStatement.setString(7, (String) params[6]);
                     preparedStatement.setInt(8, (Integer) params[7]);
                     preparedStatement.setBytes(9, (byte[]) params[8]);
                     preparedStatement.setBytes(10, (byte[]) params[9]);
                     preparedStatement.setBytes(11, (byte[]) params[10]);
                     preparedStatement.executeUpdate();
-                }
+
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -297,6 +286,107 @@ public class EventAdd extends AppCompatActivity {
             }
         }
     }
+    private class InsertEventTask0 extends AsyncTask<Object, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+                String query = "INSERT INTO events (EventName, Description, EventDate, EventTime, Venue, AgeRestriction,Recurring, CapacityLimit) VALUES (?, ?, ?, ?, ?, ? , ?, ? )";
+                try {
+                    PreparedStatement preparedStatement = connection.prepareStatement(query) ;
+                    preparedStatement.setString(1, (String) params[0]);
+                    preparedStatement.setString(2, (String) params[1]);
+                    preparedStatement.setString(3, (String) params[2]);
+                    preparedStatement.setString(4, (String) params[3]);
+                    preparedStatement.setString(5, (String) params[4]);
+                    preparedStatement.setInt(6, (Integer) params[5]);
+                    preparedStatement.setString(7, (String) params[6]);
+                    preparedStatement.setInt(8, (Integer) params[7]);
+                    preparedStatement.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private class InsertEventTask1 extends AsyncTask<Object, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Object... params) {
+             Connection connection = DatabaseConnection.getInstance().getConnection();
+                String query = "INSERT INTO events (EventName, Description, EventDate, EventTime, Venue, AgeRestriction,Recurring, CapacityLimit, Image1) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setString(1, (String) params[0]);
+                    preparedStatement.setString(2, (String) params[1]);
+                    preparedStatement.setString(3, (String) params[2]);
+                    preparedStatement.setString(4, (String) params[3]);
+                    preparedStatement.setString(5, (String) params[4]);
+                    preparedStatement.setInt(6, (Integer) params[5]);
+                    preparedStatement.setString(7, (String) params[6]);
+                    preparedStatement.setInt(8, (Integer) params[7]);
+                    preparedStatement.setBytes(9, (byte[]) params[8]);
+                    preparedStatement.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private class InsertEventTask2 extends AsyncTask<Object, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+                String query = "INSERT INTO events (EventName, Description, EventDate, EventTime, Venue, AgeRestriction,Recurring, CapacityLimit, Image1, Image2) VALUES (?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setString(1, (String) params[0]);
+                    preparedStatement.setString(2, (String) params[1]);
+                    preparedStatement.setString(3, (String) params[2]);
+                    preparedStatement.setString(4, (String) params[3]);
+                    preparedStatement.setString(5, (String) params[4]);
+                    preparedStatement.setInt(6, (Integer) params[5]);
+                    preparedStatement.setString(7, (String) params[6]);
+                    preparedStatement.setInt(8, (Integer) params[7]);
+                    preparedStatement.setBytes(9, (byte[]) params[8]);
+                    preparedStatement.setBytes(10, (byte[]) params[9]);
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
 
 }
