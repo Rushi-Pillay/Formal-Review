@@ -95,6 +95,7 @@ public class BusinessHomePage extends AppCompatActivity {
         Addevent.setOnClickListener(event -> {
             Intent intent = new Intent(BusinessHomePage.this, EventAdd.class);
             startActivity(intent);
+
         });
     }
 
