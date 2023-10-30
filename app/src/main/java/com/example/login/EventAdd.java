@@ -450,7 +450,6 @@ public class EventAdd extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
-
                 finish();
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
