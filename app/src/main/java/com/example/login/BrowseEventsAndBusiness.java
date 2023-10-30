@@ -104,12 +104,17 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         });
         adapter2.setOnClickListener(event -> {
             try {
-                EventAdaper.EventViewHolder viewHolder = (EventAdaper.EventViewHolder) rc2.findContainingViewHolder(event);
+                RushenEventAdaper.EventViewHolder viewHolder = (RushenEventAdaper.EventViewHolder) rc2.findContainingViewHolder(event);
                 if (viewHolder != null && viewHolder.event != null) {
                     SharedPreferences sharedPref3 = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor3 = sharedPref3.edit();
+
+
                     editor3.putInt("EventID", viewHolder.event.getEventID());
+
+
                     editor3.putString("EventName", viewHolder.event.getName());
+
                     editor3.apply();
                     Intent intent = new Intent(BrowseEventsAndBusiness.this, AttendEvent.class);
                     startActivity(intent);
@@ -133,13 +138,12 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         adapter2 = new RushenEventAdaper(events);
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         userID = sharedPref.getInt("user_id", -1);
-
         rc1 = findViewById(R.id.RBrowseEventsBusiness_BusinessRecycler);
-        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rc1.setLayoutManager(layoutManager);
         rc1.setAdapter(adapter);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rc2 = findViewById(R.id.RBrowseEventsBusiness_EventsRecycler);
         rc2.setLayoutManager(layoutManager2);
         rc2.setAdapter(adapter2);
         rc1.addItemDecoration(new SpaceItemDecoration(15));
