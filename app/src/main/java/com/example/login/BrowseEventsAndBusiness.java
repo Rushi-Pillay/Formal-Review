@@ -476,8 +476,9 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Event> fetchedEvents) {
             if (fetchedEvents != null && !fetchedEvents.isEmpty()) {
+                events = new ArrayList<>();
+                setuprecyclers();
                 events.addAll(fetchedEvents);
-                adapter2.notifyDataSetChanged();
             }
         }
     }
