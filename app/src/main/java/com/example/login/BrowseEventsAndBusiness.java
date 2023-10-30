@@ -72,7 +72,6 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Start the search when text changes
-                searchterm = s.toString();
                 doSearch();
             }
         });
@@ -156,9 +155,11 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
     }
 
     public void doSearch() {
+
         business.clear();
         events.clear();
         search = findViewById(R.id.edttxtSearch);
+        searchterm = search.getText().toString();
         new RetrieveSearchedBusinessTask().execute();
         new RetrieveSearchEventTask().execute();
 
