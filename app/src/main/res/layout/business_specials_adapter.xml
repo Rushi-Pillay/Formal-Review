@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="411dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:outlineAmbientShadowColor="@color/black"
     app:cardBackgroundColor="@color/white"
@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="match_parent">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -20,24 +20,26 @@
             android:layout_height="32dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/card_border"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.4"
-            app:civ_border_color="#FFFFFF"
-            app:civ_border_width="2dp" />
+            app:srcCompat="@drawable/card_border" />
 
         <TextView
             android:id="@+id/txtSpecDes"
-            android:layout_width="wrap_content"
+            android:layout_width="288dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
             android:text="TextView"
             android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imgSpecialsCard" />
+            app:layout_constraintStart_toEndOf="@+id/imgSpecialsCard"
+            app:layout_constraintTop_toBottomOf="@+id/txtSpecName" />
 
         <TextView
             android:id="@+id/txtSpecName"
