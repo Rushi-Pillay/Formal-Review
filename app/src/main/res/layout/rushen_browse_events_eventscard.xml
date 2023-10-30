@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="411dp"
+    android:layout_width="match_parent"
     android:layout_height="112dp"
     android:outlineAmbientShadowColor="@color/black"
     app:cardBackgroundColor="@color/white"
@@ -18,14 +18,12 @@
             android:id="@+id/REventImageView"
             android:layout_width="81dp"
             android:layout_height="81dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="17dp"
 
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ReventscardHeading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
@@ -35,58 +33,63 @@
             android:id="@+id/ReventscardHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
             android:text="TextView"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/REventsDescription"
+            app:layout_constraintStart_toEndOf="@+id/REventImageView" />
 
         <TextView
             android:id="@+id/ReventsLocation"
             android:layout_width="178dp"
             android:layout_height="21dp"
-            android:layout_marginEnd="128dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/REventImageView" />
 
         <TextView
             android:id="@+id/REventsDescription"
             android:layout_width="199dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="108dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="44dp"
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/REventImageView" />
 
         <TextView
             android:id="@+id/ReventTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="44dp"
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/REventsDescription" />
 
         <TextView
             android:id="@+id/ReventsDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="68dp"
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/REventsDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
