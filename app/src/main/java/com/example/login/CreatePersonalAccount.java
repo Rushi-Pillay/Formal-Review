@@ -37,21 +37,11 @@ public class CreatePersonalAccount extends AppCompatActivity {
         text = (TextView) findViewById(R.id.usernameLabel);
         errorText = (TextView) findViewById(R.id.edtEmail);
          connection = DatabaseConnection.getInstance().getConnection();
-        CheckBox showPasswordCheckbox = findViewById(R.id.showPasswordCheckBox);
+
         EditText passwordEditText = findViewById(R.id.edtPass);
         editText = findViewById(R.id.nameEditText);
 
-        showPasswordCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int selection = passwordEditText.getSelectionEnd();
-            if (isChecked) {
-                // Show password
-                passwordEditText.setTransformationMethod(null);
-            } else {
-                // Hide password
-                passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
-            }
-            passwordEditText.setSelection(selection);
-        });
+
 
     }
 
