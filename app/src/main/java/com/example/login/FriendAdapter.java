@@ -33,7 +33,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
             if (friend.getImage1() != null ) {
                 icon1.setImageBitmap(friend.getImage1());
             } else {
-                icon1.setImageResource(R.drawable.img);
+                icon1.setImageResource(R.drawable.defualtuser);
             }
             lblName2.setText(friend.getUsername());
             addbutton.setText("Remove");

@@ -71,12 +71,12 @@ public class BusinessHomePage extends AppCompatActivity {
         rc2.setLayoutManager(layoutManager2);
         rc1.setLayoutManager(layoutManager);
         rc3.setLayoutManager(layoutManager1);
+
         rc2.setAdapter(adapter2);
         rc1.setAdapter(adapter1);
         rc3.setAdapter(imageAdapter);
-        rc2.addItemDecoration(new SpaceItemDecoration(15));
-        rc1.addItemDecoration(new SpaceItemDecoration(15));
-        rc3.addItemDecoration(new SpaceItemDecoration(15));
+
+
         new getBusinessDataQueryAsyncTask().execute(businessID);
         new specialsQueryAsyncTask().execute(businessID);
         new imageQueryAsyncTask().execute(businessID);
@@ -97,6 +97,9 @@ public class BusinessHomePage extends AppCompatActivity {
             startActivity(intent);
 
         });
+        rc2.addItemDecoration(new SpaceItemDecoration(15));
+        rc1.addItemDecoration(new SpaceItemDecoration(15));
+        rc3.addItemDecoration(new SpaceItemDecoration(15));
     }
 
     public void BTNEditBusiness(View view) {
