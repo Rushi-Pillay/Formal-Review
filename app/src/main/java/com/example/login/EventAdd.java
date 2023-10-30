@@ -189,9 +189,9 @@ public class EventAdd extends AppCompatActivity {
                 new InsertEventTask3().execute(eventName, description, eventDate, eventTime, eventVenue, tempage,reoccurence+"",capacityLimit, image1, image2, image3);
             }
 
-            //latest = getLatestEventID();
+           new GetLatestEventIDTask().execute();
 
-            new InsertEventbussTask().execute(1,businessID);
+            new InsertEventbussTask().execute(latest,businessID);
 
 
 
@@ -394,19 +394,32 @@ public class EventAdd extends AppCompatActivity {
             }
         }
     }
-    private int getLatestEventID() {
-        Connection connection = DatabaseConnection.getInstance().getConnection();
-        String query = "SELECT MAX(eventID) FROM events"; // For MySQL. If using another DB, adjust this query accordingly.
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
+    private class GetLatestEventIDTask extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            Connection connection = DatabaseConnection.getInstance().getConnection();
+            String query = "SELECT MAX(eventID) FROM events"; // For MySQL. If using another DB, adjust this query accordingly.
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                ResultSet rs = preparedStatement.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return -1; // Return -1 if there's an error
         }
-        return -1;
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            latest = result;
+            if (latest != -1) {
+                Toast.makeText(EventAdd.this, "Latest Event ID fetched: " + latest, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(EventAdd.this, "Error occurred while fetching latest event ID", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
     private class InsertEventbussTask extends AsyncTask<Object, Void, Boolean> {
         @Override
@@ -418,20 +431,20 @@ public class EventAdd extends AppCompatActivity {
                 preparedStatement.setInt(1, (Integer) params[0]);
                 preparedStatement.setInt(2, (Integer) params[1]);
                 preparedStatement.executeUpdate();
-                preparedStatement.close();
+
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
+
                 return false;
             }
         }
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(EventAdd.this,BusinessHomePage.class);
-                startActivity(intent);
+//                Intent intent = new Intent(EventAdd.this,BusinessHomePage.class);
+//                startActivity(intent);
                 finish();
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
