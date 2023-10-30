@@ -8,21 +8,22 @@
     android:background="#FFFFFF"
     android:fitsSystemWindows="true"
     tools:context=".EditUserprofile"
-    tools:ignore="ExtraText"><![CDATA[>]]>
+    tools:ignore="ExtraText"><![CDATA[>
+
+    ]]>
 
     <Button
         android:id="@+id/btnCreate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="317dp"
+        android:layout_height="50dp"
         android:layout_marginTop="44dp"
-        android:background="@android:color/black"
+        android:background="@drawable/rounded_button"
         android:backgroundTint="@android:color/black"
         android:backgroundTintMode="screen"
         android:onClick="updateinfo"
         android:text="Update Information"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
@@ -145,6 +146,7 @@
         android:layout_width="182dp"
         android:layout_height="42dp"
         android:layout_marginTop="100dp"
+        android:background="@drawable/rounded_button"
         android:backgroundTint="#000000"
         android:onClick="selectimg"
         android:text="Select Display picture"
