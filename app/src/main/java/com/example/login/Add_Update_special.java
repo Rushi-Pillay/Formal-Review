@@ -223,7 +223,7 @@ TextView edtName,edtDescrip;
                 Intent intent = new Intent(Add_Update_special.this, EditBusinessProfile.class);
                 startActivity(intent);
             } else {
-                Toast.makeText(Add_Update_special.this, "Error, Description too long", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_Update_special.this, "Error, Description too long or name too long/Name must be less than 45 Characters", Toast.LENGTH_SHORT).show();
             }
         }
     }
