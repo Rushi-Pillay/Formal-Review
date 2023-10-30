@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -55,7 +57,25 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         new RetrieveImageTask().execute(userID);
         new RetrieveEventTask().execute();
         new RetrieveBusinessTask().execute();
+        search = findViewById(R.id.edttxtSearch);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed for this implementation
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Start the search when text changes
+                searchterm = s.toString();
+                doSearch();
+            }
+        });
         imageView.setOnClickListener(events->{
             Intent intent = new Intent(BrowseEventsAndBusiness.this,ViewUserAccount.class);
             startActivity(intent);
@@ -135,10 +155,10 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
         }
     }
 
-    public void doSearch(View view) {
-        setuprecyclers();
+    public void doSearch() {
+        business.clear();
+        events.clear();
         search = findViewById(R.id.edttxtSearch);
-        searchterm = String.valueOf(search.getText());
         new RetrieveSearchedBusinessTask().execute();
         new RetrieveSearchEventTask().execute();
 
@@ -263,7 +283,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
             try {
                 String selectQuery = "SELECT * FROM Business WHERE BusinessName LIKE '%" + searchterm + "%' " +
                         "OR Email LIKE '%" + searchterm + "%' " +
-                        "OR ContactNumber LIKE '%" + searchterm + "%' " +
+                        "OR BusType LIKE '%" + searchterm + "%' " +
                         "OR Location LIKE '%" + searchterm + "%';";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
@@ -397,12 +417,7 @@ public class BrowseEventsAndBusiness extends AppCompatActivity {
                 String selectQuery = "SELECT * FROM Events WHERE " +
                         "EventName LIKE '%" + searchterm + "%' " +
                         "OR EventDate LIKE '%" + searchterm + "%' " +
-                        "OR EventTime LIKE '%" + searchterm + "%' " +
                         "OR Venue LIKE '%" + searchterm + "%' " +
-                        "OR CapacityLimit LIKE '%" + searchterm + "%' " +
-                        "OR AgeRestriction LIKE '%" + searchterm + "%' " +
-                        "OR Recurring LIKE '%" + searchterm + "%' " +
-                        "OR Rating LIKE '%" + searchterm + "%' " +
                         "OR Description LIKE '%" + searchterm + "%';";
                 PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
                 ResultSet resultSet = preparedStatement.executeQuery();
