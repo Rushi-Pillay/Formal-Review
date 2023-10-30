@@ -234,7 +234,8 @@ public class EventAdd extends AppCompatActivity {
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
             month = month + 1;
-            String date = day + "/" + month + "/" + year;
+            String date = year+"-"+month+"-"+day;
+
             dateButton.setText(date);
         };
         Calendar cal = Calendar.getInstance();
