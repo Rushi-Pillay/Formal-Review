@@ -190,11 +190,14 @@ public class EventAdd extends AppCompatActivity {
             }
 
            new GetLatestEventIDTask().execute();
+//            Toast Tempt = new Toast(this);
+//            Tempt.setText(businessID);
+//            Tempt.show();
 
-            new InsertEventbussTask().execute(latest,businessID);
+          //  new InsertEventbussTask().execute(latest,30);
 
-//                Intent intent = new Intent(EventAdd.this,BusinessHomePage.class);
-//                startActivity(intent);
+                Intent intent = new Intent(EventAdd.this,BusinessHomePage.class);
+                startActivity(intent);
 
 
 
@@ -390,6 +393,7 @@ public class EventAdd extends AppCompatActivity {
             if (result) {
                 Toast.makeText(EventAdd.this, "Event added successfully", Toast.LENGTH_SHORT).show();
 
+
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while adding event", Toast.LENGTH_SHORT).show();
             }
@@ -417,6 +421,7 @@ public class EventAdd extends AppCompatActivity {
             latest = result;
             if (latest != -1) {
                 Toast.makeText(EventAdd.this, "Latest Event ID fetched: " + latest, Toast.LENGTH_SHORT).show();
+                new InsertEventbussTask().execute(latest,businessID);
             } else {
                 Toast.makeText(EventAdd.this, "Error occurred while fetching latest event ID", Toast.LENGTH_SHORT).show();
             }
