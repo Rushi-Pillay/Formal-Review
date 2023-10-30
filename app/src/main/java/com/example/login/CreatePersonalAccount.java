@@ -1,6 +1,7 @@
 package com.example.login;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -105,6 +106,8 @@ public class CreatePersonalAccount extends AppCompatActivity {
                 statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 statement.executeUpdate(insQuery);
                 Toast.makeText(this,"Account Created!",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CreatePersonalAccount.this , MainActivity.class);
+                startActivity(intent);
             }
 
 
